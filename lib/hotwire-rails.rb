@@ -1,6 +1,5 @@
 require "hotwire/version"
-require "hotwire/railtie"
+require "hotwire/engine"
 
 module Hotwire
-  # Your code goes here...
 end
