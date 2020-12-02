@@ -14,5 +14,11 @@ module Hotwire
 
       Rails.application.config.assets.configure { |env| env.context_class.class_eval { include Hotwire::ImportmapHelper } }
     end
+
+    initializer "hotwire.helpers" do
+      ActiveSupport.on_load(:action_controller_base) do
+        helper Hotwire::Engine.helpers
+      end
+    end
   end
 end
