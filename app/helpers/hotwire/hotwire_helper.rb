@@ -1,5 +1,5 @@
 module Hotwire::HotwireHelper
-  def hotwire_include_tag
+  def hotwire_include_tags
     [
       javascript_include_tag("hotwire/libraries/es-module-shims@0.7.1", type: "module"),
       tag.script(type: "importmap-shim", src: asset_path("hotwire/importmap.json")),
