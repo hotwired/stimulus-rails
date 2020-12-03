@@ -61,6 +61,8 @@ That's it!
 
 You can add additional libraries needed by your controllers in `app/assets/javascripts/libraries` using the `library@1.0.0.js` naming convention. These libraries will be added to the dynamically generated [importmap](https://github.com/WICG/import-maps) (a shim is included with the `hotwire_include_tags`), so you can reference `cookies@0.5.6.js` as `import Cookie from "cookies"`.
 
+The libraries must be made for ESM. See https://skypack.dev where you can either directly reference libraries or download them and use them with the ESM conversion.
+
 ## License
 
 Hotwire for Rails is released under the [MIT License](https://opensource.org/licenses/MIT).
