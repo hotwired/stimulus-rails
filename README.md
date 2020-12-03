@@ -40,7 +40,7 @@ export default class extends Controller {
     this.outputTarget.textContent = `Hello, ${this.nameTarget.value}!`
   }
 }
-`
+```
 
 And it'll be activated and registered automatically when encountering the data-controller attribute in your DOM:
 
