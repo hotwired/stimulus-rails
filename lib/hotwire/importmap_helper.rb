@@ -18,6 +18,6 @@ module Hotwire::ImportmapHelper
   end
 
   def hotwire_importmap_list
-    [ import_hotwire_frameworks_list, importmap_libraries_list, importmap_controllers_list ].join(",\n")
+    [ hotwire_import_hotwire_frameworks_list, hotwire_importmap_libraries_list, hotwire_importmap_controllers_list ].join(",\n")
   end
 end
