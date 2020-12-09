@@ -1,10 +1,14 @@
+import { Application } from "stimulus"
+
+const application = Application.start()
+
 function autoload() {
   Array.from(document.querySelectorAll('[data-controller]')).forEach((element) => {
     let controllerName = element.attributes["data-controller"].value
     let controllerFilename = `${controllerName}_controller`
 
-    import(`controllers/${controllerFilename}`).then((controllerModule) => {
-      Stimulus.register(controllerName, controllerModule.default)
+    import(controllerFilename).then((controllerModule) => {
+      application.register(controllerName, controllerModule.default)
     }).catch(error => console.log(error))
   })
 }

@@ -1,3 +1,3 @@
-module Hotwire
+module Stimulus
   VERSION = "0.1.0"
 end
