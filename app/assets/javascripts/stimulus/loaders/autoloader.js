@@ -2,8 +2,10 @@ import { Application } from "stimulus"
 
 const application = Application.start()
 
-// FIXME: Remove Turbo no longer needs a controller
-application.register("turbo-updates", TurboUpdatesController)
+// FIXME: Remove when Turbo no longer needs a controller
+if (typeof TurboUpdatesController !== 'undefined') {
+  application.register("turbo-updates", TurboUpdatesController)
+}
 
 function autoload() {
   Array.from(document.querySelectorAll('[data-controller]')).forEach((element) => {
