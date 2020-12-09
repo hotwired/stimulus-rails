@@ -6,7 +6,7 @@ module Stimulus
     config.eager_load_namespaces << Stimulus
 
     initializer "stimulus.assets" do
-      Rails.application.config.assets.precompile += %w( importmap.json stimulus )
+      Rails.application.config.assets.precompile += %w( importmap.json stimulus/manifest )
       Rails.application.config.assets.configure { |env| env.context_class.class_eval { include Stimulus::ImportmapHelper } }
     end
 
