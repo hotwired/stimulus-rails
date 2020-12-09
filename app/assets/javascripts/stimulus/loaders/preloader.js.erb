@@ -3,7 +3,7 @@ import { Application } from "stimulus"
 const application = Application.start()
 
 async function preloadControllers() {
-  const imports = await fetch("<%= asset_path "hotwire/importmap.json" %>").then(r => r.json()).then(json => json.imports)
+  const imports = await fetch("<%= asset_path "importmap.json" %>").then(r => r.json()).then(json => json.imports)
 
   for (const name in imports) {
     if (name.startsWith("controllers/")) {
