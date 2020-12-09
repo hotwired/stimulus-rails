@@ -5,6 +5,9 @@ const application = Application.start()
 async function preloadControllers() {
   const imports = await fetch("<%= asset_path "importmap.json" %>").then(r => r.json()).then(json => json.imports)
 
+  // FIXME: Remove Turbo no longer needs a controller
+  application.register("turbo-updates", TurboUpdatesController)
+
   for (const name in imports) {
     if (name.startsWith("controllers/")) {
       let controllerName = name.replace(/controllers\//, "").replace("_controller", "")
