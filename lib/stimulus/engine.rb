@@ -7,12 +7,15 @@ module Stimulus
 
     initializer "stimulus.assets" do
       Rails.application.config.assets.precompile += %w( importmap.json stimulus/manifest )
-      Rails.application.config.assets.configure { |env| env.context_class.class_eval { include Stimulus::ImportmapHelper } }
     end
 
-    initializer "Stimulus.helpers" do
+    initializer "stimulus.helpers" do
       ActiveSupport.on_load(:action_controller_base) do
         helper Stimulus::Engine.helpers
+      end
+
+      Rails.application.config.assets.configure do |env|
+        env.context_class.class_eval { include Stimulus::ImportmapHelper }
       end
     end
   end
