@@ -1,33 +1,30 @@
 # Stimulus for Rails
 
-Hotwire is an alternative approach to building modern web applications without using much JavaScript by sending HTML instead of JSON over the wire. This makes for fast first-load pages, keeps template rendering on the server, and allows for a simpler, more productive development experience in any programming language, without sacrificing any of the speed or responsiveness associated with a traditional single-page application.
+Stimulus is a JavaScript framework with modest ambitions. It doesn’t seek to take over your entire front-end—in fact, it’s not concerned with rendering HTML at all. Instead, it’s designed to augment your HTML with just enough behavior to make it shine. Stimulus pairs beautifully with Turbo to provide a complete solution for fast, compelling applications with a minimal amount of effort.
 
-The heart of Hotwire is Turbo. A set of complimentary techniques for speeding up page changes and form submissions, dividing complex pages into components, and providing partial page updates over WebSocket. All without writing any JavaScript at all. And designed from the start to integrate perfectly with native hybrid applications for iOS and Android.
+Stimulus for Rails makes it easy to use this modest framework with the asset pipeline and ES6/ESM in the browser. It uses the 7kb es-module-shim to provide [importmap](https://github.com/WICG/import-maps) support for all ES6-compatible browsers. This means you can develop and deploy without using any bundling or transpiling at all! Far less complexity, no waiting for compiling.
 
-While Turbo usually takes care of at least 80% of the interactivity that traditionally would have required JavaScript, there are still cases where a dash of custom code is required. Stimulus makes this easy with a HTML-centric approach to state and wiring.
-
-Hotwire for Rails makes both of these JavaScript libraries available using the asset pipeline, and leans on the native support in modern browsers for ES6 and ESM. This allows you to entirely skip a JavaScript build and bundling pipeline (such as Webpack). You don't even have to have node or yarn configured for your app!
+If you want to use Stimulus with a bundler, you should use Webpacker instead. This gem is purely intended for those who wish to use Stimulus with the asset pipeline using ESM in the browser.
 
 ## Installation
 
-Add the gem and install the gem:
+1. Add the `stimulus-rails` gem to your Gemfile: `gem 'stimulus-rails'
+2. Run `./bin/bundle install`.
+3. Run `./bin/rails stimulus:install`
 
-```
-gem 'hotwire-rails'
-$ ./bin/bundle
-```
+The last command will:
 
-Add the hotwire include tags to the `<head>` of your application.html.erb:
+1. Create an example controller in app/assets/javascripts/controllers/hello_controller.js
+2. Append the include tags to the `<head>` of your application.html.erb.
+3. Initialize your importmap.json in app/assets/javascripts/importmap.json.erb.
+4. Ensure JavaScript is included in your app/config/manifest.js file for compilcation.
 
-```
-<%= hotwire_include_tags %>
-```
 
 ## Usage
 
-Once the Hotwire include tags are added, you'll automatically have activated Turbo. So page changes and form submissions will be accelerated. You'll have access to Turbo Frames and Turbo Updates. And you can easily add new Stimulus controllers that'll be autoloaded via ESM dynamic imports when the `data-controller` tag appears in your DOM.
+With the Stimulus include tags added, you'll automatically have activated Stimulus through the controller loader (the default is an autoloader, which loads controllers as they appear in the DOM, but there's also a preloader available that'll load them all up front). You can now easily add new Stimulus controllers that'll be loaded via ESM dynamic imports.
 
-You can add a Stimulus controller for pre- or autoloading by creating a file in `app/assets/javascripts/controllers`, like:
+For example, a more advanced hello_controller could look like this:
 
 ```javascript
 // app/assets/javascripts/controllers/hello_controller.js
@@ -59,10 +56,11 @@ And it'll be activated and registered automatically when encountering the data-c
 
 That's it!
 
-You can add additional libraries needed by your controllers in `app/assets/javascripts/libraries` using the `library@1.0.0.js` naming convention. These libraries will be added to the dynamically generated [importmap](https://github.com/WICG/import-maps) (a shim is included with the `hotwire_include_tags`), so you can reference `cookies@0.5.6.js` as `import Cookie from "cookies"`.
+You can add additional libraries needed by your controllers in `app/assets/javascripts/libraries` using the `library@1.0.0.js` naming convention. These libraries will be added to the dynamically generated [importmap](https://github.com/WICG/import-maps) (a shim is included with the `stimulus_include_tags`), so you can reference `cookies@0.5.6.js` as `import Cookie from "cookies"`.
 
 The libraries must be made for ESM. See https://skypack.dev where you can either directly reference libraries or download them and use them with the ESM conversion.
 
+
 ## License
 
-Hotwire for Rails is released under the [MIT License](https://opensource.org/licenses/MIT).
+Stimulus for Rails is released under the [MIT License](https://opensource.org/licenses/MIT).
