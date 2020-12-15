@@ -8,7 +8,7 @@ If you want to use Stimulus with a bundler, you should use Webpacker instead. Th
 
 ## Installation
 
-1. Add the `stimulus-rails` gem to your Gemfile: `gem 'stimulus-rails`
+1. Add the `stimulus-rails` gem to your Gemfile: `gem 'stimulus-rails'`
 2. Run `./bin/bundle install`.
 3. Run `./bin/rails stimulus:install`
 
