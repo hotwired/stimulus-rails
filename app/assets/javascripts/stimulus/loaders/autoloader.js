@@ -15,4 +15,4 @@ function autoload() {
 
 autoload()
 
-window.addEventListener("turbolinks:load", autoload)
+window.addEventListener("turbo:load", autoload)
