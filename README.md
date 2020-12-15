@@ -22,7 +22,7 @@ The last command will:
 
 ## Usage
 
-With the Stimulus include tags added, you'll automatically have activated Stimulus through the controller loader (the default is an autoloader, which loads controllers as they appear in the DOM, but there's also a preloader available that'll load them all up front). You can now easily add new Stimulus controllers that'll be loaded via ESM dynamic imports.
+With the Stimulus include tags added, you'll automatically have activated Stimulus through the controller autoloader. You can now easily add new Stimulus controllers that'll be loaded via ESM dynamic imports.
 
 For example, a more advanced hello_controller could look like this:
 
