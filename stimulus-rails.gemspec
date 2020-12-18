@@ -5,8 +5,8 @@ Gem::Specification.new do |spec|
   spec.version     = Stimulus::VERSION
   spec.authors     = [ "Sam Stephenson", "Javan Mahkmali", "David Heinemeier Hansson" ]
   spec.email       = "david@loudthinking.com"
-  spec.homepage    = "https://stimulusjs.org/"
-  spec.summary     = "HTML over the wire."
+  spec.homepage    = "https://github.com/hotwired/stimulus-rails"
+  spec.summary     = "A modest JavaScript framework for the HTML you already have."
   spec.license     = "MIT"
 
   spec.metadata["homepage_uri"] = spec.homepage
