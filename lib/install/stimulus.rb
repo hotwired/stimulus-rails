@@ -14,3 +14,4 @@ comment_lines Rails.root.join("config/environments/development.rb"), /config.ass
 say "Turn off rack-mini-profiler"
 comment_lines Rails.root.join("Gemfile"), /rack-mini-profiler/
 run "bin/bundle"
+run "bin/bundle", capture: true
