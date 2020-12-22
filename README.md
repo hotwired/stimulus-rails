@@ -1,6 +1,6 @@
 # Stimulus for Rails
 
-[Stimulus](https://stimulus.hotwire.dev) is a JavaScript framework with modest ambitions. It doesn’t seek to take over your entire front-end—in fact, it’s not concerned with rendering HTML at all. Instead, it’s designed to augment your HTML with just enough behavior to make it shine. Stimulus pairs beautifully with Turbo to provide a complete solution for fast, compelling applications with a minimal amount of effort.
+[Stimulus](https://stimulus.hotwire.dev) is a JavaScript framework with modest ambitions. It doesn’t seek to take over your entire front-end in fact, it’s not concerned with rendering HTML at all. Instead, it’s designed to augment your HTML with just enough behavior to make it shine. Stimulus pairs beautifully with Turbo to provide a complete solution for fast, compelling applications with a minimal amount of effort.
 
 Stimulus for Rails makes it easy to use this modest framework with the asset pipeline and ES6/ESM in the browser. It uses the 7kb es-module-shim to provide [importmap](https://github.com/WICG/import-maps) support for all ES6-compatible browsers. This means you can develop and deploy without using any bundling or transpiling at all! Far less complexity, no waiting for compiling.
 
@@ -17,7 +17,7 @@ The last command will:
 1. Create an example controller in app/assets/javascripts/controllers/hello_controller.js
 2. Append the include tags to the `<head>` of your application.html.erb.
 3. Initialize your importmap.json in app/assets/javascripts/importmap.json.erb.
-4. Ensure JavaScript is included in your app/config/manifest.js file for compilcation.
+4. Ensure JavaScript is included in your app/config/manifest.js file for compilation.
 
 
 ## Usage
