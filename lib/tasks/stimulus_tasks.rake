@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :stimulus do
   desc "Install Stimulus into the app"
   task :install do

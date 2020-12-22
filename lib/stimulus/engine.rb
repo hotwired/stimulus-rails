@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "stimulus/importmap_helper"
 
 module Stimulus

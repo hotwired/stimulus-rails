@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 say "Copying Stimulus JavaScript"
 directory "#{__dir__}/app/assets/javascripts", "app/assets/javascripts"
 empty_directory "app/assets/javascripts/libraries"

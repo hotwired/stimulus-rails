@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Stimulus::ImportmapHelper
   def importmap_list_with_stimulus_from(*paths)
     [ %("stimulus": "#{asset_path("stimulus/libraries/stimulus")}"), importmap_list_from(*paths) ].join(",\n")

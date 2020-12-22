@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Stimulus::StimulusHelper
   def stimulus_include_tags
     [
