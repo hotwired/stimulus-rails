@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    stimulus-rails (0.1.0)
+    hotwire-stimulus-rails (0.1.0)
       rails (>= 6.0.0)
 
 GEM
@@ -138,7 +138,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  stimulus-rails!
+  hotwire-stimulus-rails!
 
 BUNDLED WITH
    2.1.4
