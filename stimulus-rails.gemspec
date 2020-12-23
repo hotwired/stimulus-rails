@@ -1,7 +1,7 @@
 require_relative "lib/stimulus/version"
 
 Gem::Specification.new do |spec|
-  spec.name        = "hotwire-stimulus-rails"
+  spec.name        = "stimulus-rails"
   spec.version     = Stimulus::VERSION
   spec.authors     = [ "Sam Stephenson", "Javan Mahkmali", "David Heinemeier Hansson" ]
   spec.email       = "david@loudthinking.com"
