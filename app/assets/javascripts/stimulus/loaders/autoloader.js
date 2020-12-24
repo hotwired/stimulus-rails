@@ -7,7 +7,7 @@ function autoload() {
     const controllerNames = element.attributes["data-controller"].value.split(" ")
 
     controllerNames.forEach((controllerName) => {
-      let underscoredControllerName = controllerName.replace(/-/g, "_")
+      let underscoredControllerName = controllerName.replace(/--/g, "/").replace(/-/g, "_")
       let controllerFilename = `${underscoredControllerName}_controller`
 
       import(controllerFilename).then((controllerModule) => {
