@@ -1,0 +1,14 @@
+Description:
+    Generates a new stimulus controller. Pass the controller name, either
+    CamelCased or under_scored.
+
+    To create a controller within a module, specify the controller name as a
+    path like 'parent_module/controller_name'.
+
+    This generates a controller class in app/assets/javascripts/controllers.
+
+Example:
+    `bin/rails generate stimulus Message`
+
+    Message controller
+        Controller: app/assets/javascripts/controllers/message_controller.js
