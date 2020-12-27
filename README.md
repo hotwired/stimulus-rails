@@ -14,17 +14,17 @@ If you want to use Stimulus with a bundler, you should use [Webpacker](https://g
 
 The last command will:
 
-1. Create an example controller in app/assets/javascripts/controllers/hello_controller.js
-2. Append the include tags to the `<head>` of your application.html.erb.
-3. Initialize your importmap.json in app/assets/javascripts/importmap.json.erb.
-4. Ensure JavaScript is included in your app/config/manifest.js file for compilation.
+1. Create an example controller in `app/assets/javascripts/controllers/hello_controller.js`
+2. Append the include tags to the `<head>` of your `app/views/layouts/application.html.erb`.
+3. Initialize your `importmap.json` in `app/assets/javascripts/importmap.json.erb`.
+4. Ensure JavaScript is included in your `app/config/manifest.js` file for compilation.
 
 
 ## Usage
 
 With the Stimulus include tags added, you'll automatically have activated Stimulus through the controller autoloader. You can now easily add new Stimulus controllers that'll be loaded via ESM dynamic imports.
 
-For example, a more advanced hello_controller could look like this:
+For example, a more advanced `hello_controller` could look like this:
 
 ```javascript
 // app/assets/javascripts/controllers/hello_controller.js
@@ -43,13 +43,13 @@ And it'll be activated and registered automatically when encountering the data-c
 
 ```html
 <div data-controller="hello">
-  <input data-target="hello.name" type="text">
+  <input data-hello-target="name" type="text">
 
   <button data-action="click->hello#greet">
     Greet
   </button>
 
-  <span data-target="hello.output">
+  <span data-hello-target="output">
   </span>
 </div>
 ```
