@@ -6,7 +6,7 @@ class Autoloader {
   }
 
   loadControllers() {
-    Promise.allSettled(
+    return Promise.allSettled(
       Array.from(document.querySelectorAll('[data-controller]')).flatMap((element) => {
         const controllerNames = element.attributes["data-controller"].value.split(" ")
 
