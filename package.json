@@ -1,0 +1,15 @@
+{
+  "scripts": {
+    "test": "karma start"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^11.0.1",
+    "@stimulus/test": "^2.0.0",
+    "karma": "^5.2.3",
+    "karma-chrome-launcher": "^3.1.0",
+    "karma-qunit": "^4.1.1",
+    "karma-rollup-preprocessor": "^7.0.5",
+    "qunit": "^2.13.0",
+    "rollup": "^2.35.1"
+  }
+}
