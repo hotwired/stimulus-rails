@@ -1,6 +1,6 @@
 import { Application } from "stimulus"
 
-class Autoloader {
+export class Autoloader {
   constructor() {
     this.application = Application.start()
   }
