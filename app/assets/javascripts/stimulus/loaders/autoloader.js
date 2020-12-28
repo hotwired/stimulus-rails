@@ -6,15 +6,19 @@ class Autoloader {
   }
 
   loadControllers() {
-    Array.from(document.querySelectorAll('[data-controller]')).forEach((element) => {
-      const controllerNames = element.attributes["data-controller"].value.split(" ")
-  
-      controllerNames.forEach((controllerName) => {
-        this.loadController(controllerName).catch(error => console.log(`Failed to autoload controller: ${controllerName}`))
+    Promise.allSettled(
+      Array.from(document.querySelectorAll('[data-controller]')).flatMap((element) => {
+        const controllerNames = element.attributes["data-controller"].value.split(" ")
+
+        return controllerNames.map((controllerName) => this.loadController(controllerName))
+      })
+    ).then((values) => {
+      values.filter((value) => value.status === "rejected").forEach((value) => {
+        console.log(value.reason)
       })
     })
   }
-  
+
   async loadController(name) {
     try {
       const underscoredControllerName = name.replace(/--/g, "/").replace(/-/g, "_")
@@ -25,7 +29,7 @@ class Autoloader {
       throw `Failed to autoload controller: ${name}`
     }
   }
-  
+
   enable() {
     this.loadControllers()
     window.addEventListener("turbo:load", this.loadControllers)
