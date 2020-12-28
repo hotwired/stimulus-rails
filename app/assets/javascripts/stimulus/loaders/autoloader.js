@@ -14,7 +14,7 @@ class Autoloader {
       })
     ).then((values) => {
       values.filter((value) => value.status === "rejected").forEach((value) => {
-        console.log(value.reason)
+        this.application.logger.error(value.reason)
       })
     })
   }
