@@ -1,0 +1,9 @@
+{
+  "imports": {
+    "stimulus": "/base/app/assets/javascripts/stimulus/libraries/stimulus@2.js",
+    "hello_controller": "/base/test/fixtures/files/controllers/hello_controller.js",
+    "goodbye_controller": "/base/test/fixtures/files/controllers/goodbye_controller.js",
+    "multi_word_controller": "/base/test/fixtures/files/controllers/multi_word_controller.js",
+    "some_namespace/another_namespace/hello_controller": "/base/test/fixtures/files/controllers/some_namespace/another_namespace/hello_controller.js"
+  }
+}
