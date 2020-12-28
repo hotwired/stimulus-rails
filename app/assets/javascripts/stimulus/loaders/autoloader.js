@@ -5,7 +5,7 @@ class Autoloader {
     this.application = Application.start()
   }
 
-  autoload() {
+  loadControllers() {
     Array.from(document.querySelectorAll('[data-controller]')).forEach((element) => {
       const controllerNames = element.attributes["data-controller"].value.split(" ")
   
@@ -19,10 +19,13 @@ class Autoloader {
       })
     })
   }
+  
+  enable() {
+    this.loadControllers()
+    window.addEventListener("turbo:load", this.loadControllers)
+  }
 }
 
 const autoloader = new Autoloader()
 
-autoloader.autoload()
-
-window.addEventListener("turbo:load", autoloader.autoload)
+autoloader.enable()
