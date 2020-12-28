@@ -1,5 +1,5 @@
-require "stimulus/version"
-require "stimulus/engine"
-
 module Stimulus
 end
+
+require "stimulus/version"
+require "stimulus/engine"
