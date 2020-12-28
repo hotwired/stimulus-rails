@@ -10,7 +10,7 @@ module Stimulus
 
     initializer "stimulus.helpers" do
       ActiveSupport.on_load(:action_controller_base) do
-        helper Stimulus::Engine.helpers
+        helper Stimulus::StimulusHelper
       end
 
       Rails.application.config.assets.configure do |env|
