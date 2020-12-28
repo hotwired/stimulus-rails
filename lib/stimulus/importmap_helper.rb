@@ -14,6 +14,8 @@ module Stimulus::ImportmapHelper
         next if FileTest.directory?(path)
 
         relative_pathname = Pathname.new(path).relative_path_from(absolute_path)
+        next if relative_pathname.basename.to_s.start_with?(".")
+
         module_name = importmap_module_name_from(relative_pathname)
         entries << %("#{module_name}": "#{asset_path("#{dirname}/#{relative_pathname}")}")
       end
