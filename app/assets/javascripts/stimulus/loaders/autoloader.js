@@ -62,7 +62,6 @@ export class Autoloader {
   async loadController(name) {
     try {
       const underscoredControllerName = name.replace(/--/g, "/").replace(/-/g, "_")
-
       const module = await import(`${underscoredControllerName}_controller`)
       this.application.register(name, module.default)
     } catch(error) {
