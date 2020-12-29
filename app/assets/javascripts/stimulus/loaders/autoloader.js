@@ -13,11 +13,11 @@ export class Autoloader {
     this.application = Application.start()
   }
 
-  loadControllers() {
-    return Promise.allSettled(
-      Array.from(document.querySelectorAll('[data-controller]')).flatMap((element) => {
-        const controllerNames = element.attributes["data-controller"].value.split(" ")
 
+  async loadControllers(elements) {
+    return await Promise.allSettled(
+      elements.flatMap((element) => {
+        const controllerNames = element.attributes[Autoloader.controllerAttribute].value.split(" ")
         return controllerNames.map((controllerName) => this.loadController(controllerName))
       })
     ).then((values) => {

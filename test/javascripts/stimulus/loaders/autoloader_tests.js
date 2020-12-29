@@ -46,35 +46,46 @@ export class AutoloaderTests extends ApplicationTestCase {
   async "test autoloads controller for a single element"() {
     this.fixtureHTML = `<div data-controller="hello"></div>`
     await this.renderFixture()
-    await this.autoloader.loadControllers()
+    await this.autoloader.loadControllers(Array.from(this.fixtureElement.children))
     this.assert.strictEqual(this.autoloader.application.logger.errors.length, 0)
   }
 
   async "test autoloads multiple controllers for a single element"() {
     this.fixtureHTML = `<div data-controller="hello goodbye"></div>`
     await this.renderFixture()
-    await this.autoloader.loadControllers()
+    await this.autoloader.loadControllers(Array.from(this.fixtureElement.children))
     this.assert.strictEqual(this.autoloader.application.logger.errors.length, 0)
   }
 
   async "test fails to autoload nonexistent controllers for a single element"() {
     this.fixtureHTML = `<div data-controller="hello nonexistent"></div>`
     await this.renderFixture()
-    await this.autoloader.loadControllers()
+    await this.autoloader.loadControllers(Array.from(this.fixtureElement.children))
     this.assert.deepEqual(this.autoloader.application.logger.errors, ["Failed to autoload controller: nonexistent"])
   }
 
   async "test autoloads controllers for multiple elements"() {
     this.fixtureHTML = `<div data-controller="hello"></div><div data-controller="goodbye"></div>`
     await this.renderFixture()
-    await this.autoloader.loadControllers()
+    await this.autoloader.loadControllers(Array.from(this.fixtureElement.children))
     this.assert.strictEqual(this.autoloader.application.logger.errors.length, 0)
   }
 
   async "test fails to autoload nonexistent controllers for multiple elements"() {
     this.fixtureHTML = `<div data-controller="hello"></div><div data-controller="nonexistent"></div>`
     await this.renderFixture()
-    await this.autoloader.loadControllers()
+    await this.autoloader.loadControllers(Array.from(this.fixtureElement.children))
+    this.assert.deepEqual(this.autoloader.application.logger.errors, ["Failed to autoload controller: nonexistent"])
+  }
+
+  async "test autoloads controller for specified elements"() {
+    this.fixtureHTML = `<div data-controller="hello"></div><div data-controller="nonexistent"></div>`
+    await this.renderFixture()
+    await this.autoloader.loadControllers([this.fixtureElement.firstChild])
+    this.assert.strictEqual(this.autoloader.application.logger.errors.length, 0)
+    this.fixtureHTML = `<div data-controller="hello"></div><div data-controller="nonexistent"></div>`
+    await this.renderFixture()
+    await this.autoloader.loadControllers([this.fixtureElement.lastChild])
     this.assert.deepEqual(this.autoloader.application.logger.errors, ["Failed to autoload controller: nonexistent"])
   }
 }
