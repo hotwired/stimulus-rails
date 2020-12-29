@@ -1,6 +1,14 @@
 import { Application } from "stimulus"
 
 export class Autoloader {
+  static get controllerAttribute() {
+    return "data-controller"
+  }
+
+  static get controllersSelector() {
+    return `[${this.controllerAttribute}]`
+  }
+
   constructor() {
     this.application = Application.start()
   }
