@@ -59,7 +59,9 @@ export class Autoloader {
         return controllerNames.map((controllerName) => this.loadController(controllerName))
       })
     ).then((values) => {
-      values.filter((value) => value.status === "rejected").forEach((value) => this.application.logger.error(value.reason))
+      values.filter((value) => value.status === "rejected").forEach((value) => {
+        this.application.logger.error(value.reason.message, ...value.reason.errors)
+      })
       return values
     })
   }
@@ -70,7 +72,7 @@ export class Autoloader {
       const module = await import(`${underscoredControllerName}_controller`)
       this.application.register(name, module.default)
     } catch(error) {
-      throw `Failed to autoload controller: ${name}`
+      throw new AggregateError([error], `Failed to autoload controller: ${name}`)
     }
   }
 }

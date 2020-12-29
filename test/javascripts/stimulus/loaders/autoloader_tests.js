@@ -17,8 +17,9 @@ export class AutoloaderTests extends ApplicationTestCase {
       this.warnings.push(message)
     }
 
-    error(message) {
+    error(message, ...errors) {
       this.errors.push(message)
+      errors.forEach((error) => this.errors.push(error.message.match(/^(.+?)(?: from .*)?$/)[1]))
     }
   }
 
@@ -61,7 +62,10 @@ export class AutoloaderTests extends ApplicationTestCase {
     this.fixtureHTML = `<div data-controller="hello nonexistent"></div>`
     await this.renderFixture()
     await this.autoloader.loadControllers(Array.from(this.fixtureElement.children))
-    this.assert.deepEqual(this.autoloader.application.logger.errors, ["Failed to autoload controller: nonexistent"])
+    this.assert.deepEqual(
+      this.autoloader.application.logger.errors,
+      ["Failed to autoload controller: nonexistent", "Unable to resolve specifier 'nonexistent_controller'"]
+    )
   }
 
   async "test autoloads controllers for multiple elements"() {
@@ -75,7 +79,10 @@ export class AutoloaderTests extends ApplicationTestCase {
     this.fixtureHTML = `<div data-controller="hello"></div><div data-controller="nonexistent"></div>`
     await this.renderFixture()
     await this.autoloader.loadControllers(Array.from(this.fixtureElement.children))
-    this.assert.deepEqual(this.autoloader.application.logger.errors, ["Failed to autoload controller: nonexistent"])
+    this.assert.deepEqual(
+      this.autoloader.application.logger.errors,
+      ["Failed to autoload controller: nonexistent", "Unable to resolve specifier 'nonexistent_controller'"]
+    )
   }
 
   async "test autoloads controller for specified elements"() {
@@ -86,7 +93,10 @@ export class AutoloaderTests extends ApplicationTestCase {
     this.fixtureHTML = `<div data-controller="hello"></div><div data-controller="nonexistent"></div>`
     await this.renderFixture()
     await this.autoloader.loadControllers([this.fixtureElement.lastChild])
-    this.assert.deepEqual(this.autoloader.application.logger.errors, ["Failed to autoload controller: nonexistent"])
+    this.assert.deepEqual(
+      this.autoloader.application.logger.errors,
+      ["Failed to autoload controller: nonexistent", "Unable to resolve specifier 'nonexistent_controller'"]
+    )
   }
 
   async "test reloads controllers given attribute mutations"() {
@@ -99,7 +109,10 @@ export class AutoloaderTests extends ApplicationTestCase {
     this.assert.strictEqual(this.autoloader.application.logger.errors.length, 0)
     this.fixtureElement.firstChild.dataset.controller = "hello nonexistent"
     await this.autoloader.reloadControllers([mutation])
-    this.assert.deepEqual(this.autoloader.application.logger.errors, ["Failed to autoload controller: nonexistent"])
+    this.assert.deepEqual(
+      this.autoloader.application.logger.errors,
+      ["Failed to autoload controller: nonexistent", "Unable to resolve specifier 'nonexistent_controller'"]
+    )
   }
 
   async "test reloads controllers given child list mutations"() {
@@ -114,7 +127,10 @@ export class AutoloaderTests extends ApplicationTestCase {
     this.fixtureHTML = `<p id="loading-target" data-controller="nonexistent"></p>`
     await this.renderFixture()
     await this.autoloader.reloadControllers([mutation])
-    this.assert.deepEqual(this.autoloader.application.logger.errors, ["Failed to autoload controller: nonexistent"])
+    this.assert.deepEqual(
+      this.autoloader.application.logger.errors,
+      ["Failed to autoload controller: nonexistent", "Unable to resolve specifier 'nonexistent_controller'"]
+    )
   }
 
   async "test reloads controllers on attribute changes"() {
@@ -142,7 +158,10 @@ export class AutoloaderTests extends ApplicationTestCase {
       }
       this.autoloader.enable().then(() => element.dataset.controller = "hello nonexistent")
     })
-    this.assert.deepEqual(this.autoloader.application.logger.errors, ["Failed to autoload controller: nonexistent"])
+    this.assert.deepEqual(
+      this.autoloader.application.logger.errors,
+      ["Failed to autoload controller: nonexistent", "Unable to resolve specifier 'nonexistent_controller'"]
+    )
   }
 
   async "test reloads controllers on node additions"() {
@@ -167,7 +186,10 @@ export class AutoloaderTests extends ApplicationTestCase {
       }
       this.autoloader.enable().then(() => this.fixtureElement.innerHTML = `<p data-controller="nonexistent"></p>`)
     })
-    this.assert.deepEqual(this.autoloader.application.logger.errors, ["Failed to autoload controller: nonexistent"])
+    this.assert.deepEqual(
+      this.autoloader.application.logger.errors,
+      ["Failed to autoload controller: nonexistent", "Unable to resolve specifier 'nonexistent_controller'"]
+    )
   }
 
   async "test loads controllers on new page"() {
@@ -177,6 +199,9 @@ export class AutoloaderTests extends ApplicationTestCase {
     await this.autoloader.disable()
     this.fixtureElement.innerHTML = `<p data-controller="nonexistent"></p>`
     await this.autoloader.enable()
-    this.assert.deepEqual(this.autoloader.application.logger.errors, ["Failed to autoload controller: nonexistent"])
+    this.assert.deepEqual(
+      this.autoloader.application.logger.errors,
+      ["Failed to autoload controller: nonexistent", "Unable to resolve specifier 'nonexistent_controller'"]
+    )
   }
 }
