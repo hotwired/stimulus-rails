@@ -13,6 +13,30 @@ export class Autoloader {
     this.application = Application.start()
   }
 
+  async reloadControllers(mutationList) {
+    const targets = mutationList
+      .flatMap((record) => {
+        switch (record.type) {
+          case "attributes":
+            if (record.attributeName === Autoloader.controllerAttribute && record.target.hasAttribute(Autoloader.controllerAttribute)) {
+              return [record.target]
+            } else {
+              return []
+            }
+          case "childList":
+            return Array.from(record.addedNodes).filter((node) => {
+              return node.nodeType === Node.ELEMENT_NODE && node.hasAttribute(Autoloader.controllerAttribute)
+            })
+          default:
+            return []
+        }
+      })
+    if (targets.length > 0) {
+      return await this.loadControllers(targets)
+    } else {
+      return []
+    }
+  }
 
   async loadControllers(elements) {
     return await Promise.allSettled(

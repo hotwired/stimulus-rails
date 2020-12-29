@@ -88,4 +88,33 @@ export class AutoloaderTests extends ApplicationTestCase {
     await this.autoloader.loadControllers([this.fixtureElement.lastChild])
     this.assert.deepEqual(this.autoloader.application.logger.errors, ["Failed to autoload controller: nonexistent"])
   }
+
+  async "test reloads controllers given attribute mutations"() {
+    this.fixtureHTML = `<div data-controller="hello"></div>`
+    await this.renderFixture()
+    await this.autoloader.loadControllers(Array.from(this.fixtureElement.children))
+    this.fixtureElement.firstChild.dataset.controller = "hello goodbye"
+    const mutation = { target: this.fixtureElement.firstChild, attributeName: "data-controller", type: "attributes" }
+    await this.autoloader.reloadControllers([mutation])
+    this.assert.strictEqual(this.autoloader.application.logger.errors.length, 0)
+    this.fixtureElement.firstChild.dataset.controller = "hello nonexistent"
+    await this.autoloader.reloadControllers([mutation])
+    this.assert.deepEqual(this.autoloader.application.logger.errors, ["Failed to autoload controller: nonexistent"])
+  }
+
+  async "test reloads controllers given child list mutations"() {
+    this.fixtureHTML = `<div data-controller="hello"></div>`
+    await this.renderFixture()
+    await this.autoloader.loadControllers(Array.from(this.fixtureElement.children))
+    this.fixtureHTML = `<span id="loading-target" data-controller="hello"></span>`
+    await this.renderFixture()
+    const mutation = { target: this.fixtureElement, addedNodes: this.fixtureElement.childNodes, type: "childList" }
+    await this.autoloader.reloadControllers([mutation])
+    this.assert.strictEqual(this.autoloader.application.logger.errors.length, 0)
+    this.fixtureHTML = `<p id="loading-target" data-controller="nonexistent"></p>`
+    await this.renderFixture()
+    await this.autoloader.reloadControllers([mutation])
+    this.assert.deepEqual(this.autoloader.application.logger.errors, ["Failed to autoload controller: nonexistent"])
+  }
+
 }
