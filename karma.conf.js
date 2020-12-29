@@ -35,7 +35,8 @@ module.exports = function(config) {
     client: {
       clearContext: false,
       qunit: {
-        showUI: true
+        showUI: true,
+        testTimeout: 30000
       }
     },
     hostname: "0.0.0.0",
