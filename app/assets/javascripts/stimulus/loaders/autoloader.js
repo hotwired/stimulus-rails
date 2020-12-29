@@ -21,9 +21,8 @@ export class Autoloader {
         return controllerNames.map((controllerName) => this.loadController(controllerName))
       })
     ).then((values) => {
-      values.filter((value) => value.status === "rejected").forEach((value) => {
-        this.application.logger.error(value.reason)
-      })
+      values.filter((value) => value.status === "rejected").forEach((value) => this.application.logger.error(value.reason))
+      return values
     })
   }
 
