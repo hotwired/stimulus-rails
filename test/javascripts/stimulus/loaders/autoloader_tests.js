@@ -129,8 +129,7 @@ export class AutoloaderTests extends ApplicationTestCase {
           }
         })
       }
-      this.autoloader.enable()
-      element.dataset.controller = "hello goodbye"
+      this.autoloader.enable().then(() => element.dataset.controller = "hello goodbye")
     })
     this.assert.strictEqual(this.autoloader.application.logger.errors.length, 0)
     await new Promise((resolve) => {
@@ -141,8 +140,7 @@ export class AutoloaderTests extends ApplicationTestCase {
           }
         })
       }
-      this.autoloader.enable()
-      element.dataset.controller = "hello nonexistent"
+      this.autoloader.enable().then(() => element.dataset.controller = "hello nonexistent")
     })
     this.assert.deepEqual(this.autoloader.application.logger.errors, ["Failed to autoload controller: nonexistent"])
   }
@@ -156,8 +154,7 @@ export class AutoloaderTests extends ApplicationTestCase {
           }
         })
       }
-      this.autoloader.enable()
-      this.fixtureElement.innerHTML = `<div data-controller="hello"></div>`
+      this.autoloader.enable().then(() => this.fixtureElement.innerHTML = `<div data-controller="hello"></div>`)
     })
     this.assert.strictEqual(this.autoloader.application.logger.errors.length, 0)
     await new Promise((resolve) => {
@@ -168,8 +165,7 @@ export class AutoloaderTests extends ApplicationTestCase {
           }
         })
       }
-      this.autoloader.enable()
-      this.fixtureElement.innerHTML = `<p data-controller="nonexistent"></p>`
+      this.autoloader.enable().then(() => this.fixtureElement.innerHTML = `<p data-controller="nonexistent"></p>`)
     })
     this.assert.deepEqual(this.autoloader.application.logger.errors, ["Failed to autoload controller: nonexistent"])
   }

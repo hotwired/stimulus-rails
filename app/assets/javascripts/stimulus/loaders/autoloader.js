@@ -14,7 +14,7 @@ export class Autoloader {
     this.observer = new MutationObserver((mutationList) => this.observerCallback(mutationList))
   }
 
-  enable() {
+  async enable() {
     this.observer.observe(document.body, { attributeFilter: [Autoloader.controllerAttribute], subtree: true, childList: true })
   }
 
