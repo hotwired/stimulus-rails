@@ -11,6 +11,11 @@ export class Autoloader {
 
   constructor() {
     this.application = Application.start()
+    this.observer = new MutationObserver((mutationList) => this.observerCallback(mutationList))
+  }
+
+  observerCallback(mutationList) {
+    this.reloadControllers(mutationList)
   }
 
   async reloadControllers(mutationList) {
