@@ -117,4 +117,60 @@ export class AutoloaderTests extends ApplicationTestCase {
     this.assert.deepEqual(this.autoloader.application.logger.errors, ["Failed to autoload controller: nonexistent"])
   }
 
+  async "test reloads controllers on attribute changes"() {
+    this.fixtureHTML = `<div id="loading-target" data-controller="hello"></div>`
+    await this.renderFixture()
+    const element = this.findElement("#loading-target")
+    await new Promise((resolve) => {
+      this.autoloader.observerCallback = (mutationList) => {
+        this.autoloader.reloadControllers(mutationList).then((result) => {
+          if (result.length > 0) {
+            resolve()
+          }
+        })
+      }
+      this.autoloader.enable()
+      element.dataset.controller = "hello goodbye"
+    })
+    this.assert.strictEqual(this.autoloader.application.logger.errors.length, 0)
+    await new Promise((resolve) => {
+      this.autoloader.observerCallback = (mutationList) => {
+        this.autoloader.reloadControllers(mutationList).then((result) => {
+          if (result.length > 0) {
+            resolve()
+          }
+        })
+      }
+      this.autoloader.enable()
+      element.dataset.controller = "hello nonexistent"
+    })
+    this.assert.deepEqual(this.autoloader.application.logger.errors, ["Failed to autoload controller: nonexistent"])
+  }
+
+  async "test reloads controllers on node additions"() {
+    await new Promise((resolve) => {
+      this.autoloader.observerCallback = (mutationList) => {
+        this.autoloader.reloadControllers(mutationList).then((result) => {
+          if (result.length > 0) {
+            resolve()
+          }
+        })
+      }
+      this.autoloader.enable()
+      this.fixtureElement.innerHTML = `<div data-controller="hello"></div>`
+    })
+    this.assert.strictEqual(this.autoloader.application.logger.errors.length, 0)
+    await new Promise((resolve) => {
+      this.autoloader.observerCallback = (mutationList) => {
+        this.autoloader.reloadControllers(mutationList).then((result) => {
+          if (result.length > 0) {
+            resolve()
+          }
+        })
+      }
+      this.autoloader.enable()
+      this.fixtureElement.innerHTML = `<p data-controller="nonexistent"></p>`
+    })
+    this.assert.deepEqual(this.autoloader.application.logger.errors, ["Failed to autoload controller: nonexistent"])
+  }
 }
