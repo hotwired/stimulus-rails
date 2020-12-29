@@ -169,4 +169,14 @@ export class AutoloaderTests extends ApplicationTestCase {
     })
     this.assert.deepEqual(this.autoloader.application.logger.errors, ["Failed to autoload controller: nonexistent"])
   }
+
+  async "test loads controllers on new page"() {
+    this.fixtureElement.innerHTML = `<div data-controller="hello"></div>`
+    await this.autoloader.enable()
+    this.assert.strictEqual(this.autoloader.application.logger.errors.length, 0)
+    await this.autoloader.disable()
+    this.fixtureElement.innerHTML = `<p data-controller="nonexistent"></p>`
+    await this.autoloader.enable()
+    this.assert.deepEqual(this.autoloader.application.logger.errors, ["Failed to autoload controller: nonexistent"])
+  }
 }

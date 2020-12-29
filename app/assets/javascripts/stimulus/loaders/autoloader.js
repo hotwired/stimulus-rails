@@ -15,7 +15,12 @@ export class Autoloader {
   }
 
   async enable() {
+    await this.loadControllers(Array.from(document.querySelectorAll(Autoloader.controllersSelector)))
     this.observer.observe(document.body, { attributeFilter: [Autoloader.controllerAttribute], subtree: true, childList: true })
+  }
+
+  disable() {
+    this.observer.disconnect()
   }
 
   observerCallback(mutationList) {
