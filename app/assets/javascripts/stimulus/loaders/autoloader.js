@@ -14,6 +14,10 @@ export class Autoloader {
     this.observer = new MutationObserver((mutationList) => this.observerCallback(mutationList))
   }
 
+  enable() {
+    this.observer.observe(document.body, { attributeFilter: [Autoloader.controllerAttribute], subtree: true, childList: true })
+  }
+
   observerCallback(mutationList) {
     this.reloadControllers(mutationList)
   }
@@ -64,11 +68,6 @@ export class Autoloader {
     } catch(error) {
       throw `Failed to autoload controller: ${name}`
     }
-  }
-
-  enable() {
-    this.loadControllers()
-    window.addEventListener("turbo:load", this.loadControllers)
   }
 }
 
