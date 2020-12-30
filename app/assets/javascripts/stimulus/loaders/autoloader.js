@@ -1,6 +1,6 @@
 import { Application } from "stimulus"
 
-export class Autoloader {
+class Autoloader {
   static get controllerAttribute() {
     return "data-controller"
   }
@@ -80,3 +80,5 @@ export class Autoloader {
 const autoloader = new Autoloader()
 
 autoloader.enable()
+
+export { autoloader }

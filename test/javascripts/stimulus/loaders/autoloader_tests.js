@@ -1,5 +1,5 @@
 import { ApplicationTestCase } from "../../application_test_case.js"
-import { Autoloader } from "../../../../app/assets/javascripts/stimulus/loaders/autoloader.js"
+import { autoloader } from "../../../../app/assets/javascripts/stimulus/loaders/autoloader.js"
 
 export class AutoloaderTests extends ApplicationTestCase {
   Logger = class {
@@ -24,7 +24,7 @@ export class AutoloaderTests extends ApplicationTestCase {
   }
 
   async setup() {
-    this.autoloader = new Autoloader()
+    this.autoloader = autoloader
     this.autoloader.application.logger = new this.Logger()
   }
 
@@ -45,6 +45,7 @@ export class AutoloaderTests extends ApplicationTestCase {
   }
 
   async "test autoloads controller for a single element"() {
+    this.autoloader.disable()
     this.fixtureHTML = `<div data-controller="hello"></div>`
     await this.renderFixture()
     await this.autoloader.loadControllers(Array.from(this.fixtureElement.children))
@@ -52,6 +53,7 @@ export class AutoloaderTests extends ApplicationTestCase {
   }
 
   async "test autoloads multiple controllers for a single element"() {
+    this.autoloader.disable()
     this.fixtureHTML = `<div data-controller="hello goodbye"></div>`
     await this.renderFixture()
     await this.autoloader.loadControllers(Array.from(this.fixtureElement.children))
@@ -59,6 +61,7 @@ export class AutoloaderTests extends ApplicationTestCase {
   }
 
   async "test fails to autoload nonexistent controllers for a single element"() {
+    this.autoloader.disable()
     this.fixtureHTML = `<div data-controller="hello nonexistent"></div>`
     await this.renderFixture()
     await this.autoloader.loadControllers(Array.from(this.fixtureElement.children))
@@ -69,6 +72,7 @@ export class AutoloaderTests extends ApplicationTestCase {
   }
 
   async "test autoloads controllers for multiple elements"() {
+    this.autoloader.disable()
     this.fixtureHTML = `<div data-controller="hello"></div><div data-controller="goodbye"></div>`
     await this.renderFixture()
     await this.autoloader.loadControllers(Array.from(this.fixtureElement.children))
@@ -76,6 +80,7 @@ export class AutoloaderTests extends ApplicationTestCase {
   }
 
   async "test fails to autoload nonexistent controllers for multiple elements"() {
+    this.autoloader.disable()
     this.fixtureHTML = `<div data-controller="hello"></div><div data-controller="nonexistent"></div>`
     await this.renderFixture()
     await this.autoloader.loadControllers(Array.from(this.fixtureElement.children))
@@ -86,6 +91,7 @@ export class AutoloaderTests extends ApplicationTestCase {
   }
 
   async "test autoloads controller for specified elements"() {
+    this.autoloader.disable()
     this.fixtureHTML = `<div data-controller="hello"></div><div data-controller="nonexistent"></div>`
     await this.renderFixture()
     await this.autoloader.loadControllers([this.fixtureElement.firstChild])
@@ -100,6 +106,7 @@ export class AutoloaderTests extends ApplicationTestCase {
   }
 
   async "test reloads controllers given attribute mutations"() {
+    this.autoloader.disable()
     this.fixtureHTML = `<div data-controller="hello"></div>`
     await this.renderFixture()
     await this.autoloader.loadControllers(Array.from(this.fixtureElement.children))
@@ -116,6 +123,7 @@ export class AutoloaderTests extends ApplicationTestCase {
   }
 
   async "test reloads controllers given child list mutations"() {
+    this.autoloader.disable()
     this.fixtureHTML = `<div data-controller="hello"></div>`
     await this.renderFixture()
     await this.autoloader.loadControllers(Array.from(this.fixtureElement.children))
@@ -134,6 +142,7 @@ export class AutoloaderTests extends ApplicationTestCase {
   }
 
   async "test reloads controllers on attribute changes"() {
+    this.autoloader.disable()
     this.fixtureHTML = `<div id="loading-target" data-controller="hello"></div>`
     await this.renderFixture()
     const element = this.findElement("#loading-target")
@@ -165,6 +174,7 @@ export class AutoloaderTests extends ApplicationTestCase {
   }
 
   async "test reloads controllers on node additions"() {
+    this.autoloader.disable()
     await new Promise((resolve) => {
       this.autoloader.observerCallback = (mutationList) => {
         this.autoloader.reloadControllers(mutationList).then((result) => {
@@ -193,6 +203,7 @@ export class AutoloaderTests extends ApplicationTestCase {
   }
 
   async "test loads controllers on new page"() {
+    this.autoloader.disable()
     this.fixtureElement.innerHTML = `<div data-controller="hello"></div>`
     await this.autoloader.enable()
     this.assert.strictEqual(this.autoloader.application.logger.errors.length, 0)
