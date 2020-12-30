@@ -6,6 +6,7 @@ module Stimulus::ImportmapHelper
   def importmap_list_from(*paths)
     Array(paths).flat_map do |path|
       absolute_path = Rails.root.join(path)
+      next [] unless absolute_path.exist?
       dirname       = absolute_path.basename.to_s
 
       absolute_path.children.collect do |module_filename|
