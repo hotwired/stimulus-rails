@@ -9,4 +9,13 @@ class Stimulus::ImportmapHelperTest < ActionView::TestCase
       "some_namespace/another_namespace/hello_controller": "/controllers/some_namespace/another_namespace/hello_controller.js"
     EXPECTED
   end
+
+  test "recursively adds files with a pattern to importmap" do
+    assert_equal <<~EXPECTED.strip, importmap_list_from([file_fixture("components"), "_controller.js"])
+      "goodbye_controller": "/components/goodbye_controller.js",
+      "hello_controller": "/components/hello_controller.js",
+      "multi_word_controller": "/components/multi_word_controller.js",
+      "some_namespace/hello_controller": "/components/some_namespace/hello_controller.js"
+    EXPECTED
+  end
 end

@@ -7,6 +7,8 @@ module Stimulus::ImportmapHelper
 
   def importmap_list_from(*paths)
     Array(paths).flat_map do |path|
+      path, pattern = path
+
       absolute_path = Rails.root.join(path)
       dirname       = absolute_path.basename.to_s
 
@@ -15,6 +17,7 @@ module Stimulus::ImportmapHelper
 
         relative_pathname = Pathname.new(path).relative_path_from(absolute_path)
         next if relative_pathname.basename.to_s.start_with?(".")
+        next if pattern && !relative_pathname.basename.to_s.match?(/#{pattern}/)
 
         module_name = importmap_module_name_from(relative_pathname)
         entries << %("#{module_name}": "#{asset_path("#{dirname}/#{relative_pathname}")}")
