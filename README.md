@@ -17,7 +17,7 @@ The last command will:
 1. Create an example controller in `app/assets/javascripts/controllers/hello_controller.js`
 2. Append the include tags to the `<head>` of your `app/views/layouts/application.html.erb`.
 3. Initialize your `importmap.json` in `app/assets/javascripts/importmap.json.erb`.
-4. Ensure JavaScript is included in your `app/config/manifest.js` file for compilation.
+4. Ensure JavaScript is included in your `app/assets/config/manifest.js` file for compilation.
 
 
 ## Usage
