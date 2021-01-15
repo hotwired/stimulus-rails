@@ -7,6 +7,8 @@ module Stimulus::ImportmapHelper
     Array(paths).flat_map do |path|
       if (absolute_path = Rails.root.join(path)).exist?
         absolute_path.children.collect do |module_filename|
+          next unless module_filename.extname =~ /js(m)?$/
+          
           module_name = importmap_module_name_from(module_filename)
           module_path = asset_path("#{absolute_path.basename.to_s}/#{module_filename.basename}")
 
