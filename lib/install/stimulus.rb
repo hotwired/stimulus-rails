@@ -1,6 +1,6 @@
 say "Copying Stimulus JavaScript"
 directory "#{__dir__}/app/assets/javascripts", "app/assets/javascripts"
-empty_directory "app/assets/javascripts/libraries"
+empty_directory_with_keep_file "app/assets/javascripts/libraries"
 
 say "Add app/javascripts to asset pipeline manifest"
 append_to_file Rails.root.join("app/assets/config/manifest.js").to_s, "//= link_tree ../javascripts\n"
