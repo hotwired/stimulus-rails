@@ -1,10 +1,8 @@
-def run_install_template(path) system "#{RbConfig.ruby} ./bin/rails app:template LOCATION=#{File.expand_path("../install/#{path}.rb", __dir__)}" end
-
 namespace :stimulus do
   desc "Install Stimulus into the app"
   task :install do
     if defined?(Webpacker::Engine)
-      Rake::Task["stimulus:install:webpacker"].invoke
+      Rake::Task["webpacker:install:stimulus"].invoke
     else
       Rake::Task["stimulus:install:asset_pipeline"].invoke
     end
@@ -13,11 +11,7 @@ namespace :stimulus do
   namespace :install do
     desc "Install Stimulus into the app with the asset pipeline"
     task :asset_pipeline do
-      run_install_template "stimulus_with_asset_pipeline"
+      system "#{RbConfig.ruby} ./bin/rails app:template LOCATION=#{File.expand_path("../install/stimulus_with_asset_pipeline.rb", __dir__)}"
     end
-
-    desc "Install Stimulus into the app with webpacker"
-    task :webpacker do
-      run_install_template "stimulus_with_webpacker"
-    end
+  end
 end
