@@ -5,14 +5,15 @@ module Stimulus::ImportmapHelper
 
   def importmap_list_from(*paths)
     Array(paths).flat_map do |path|
-      absolute_path = Rails.root.join(path)
-      dirname       = absolute_path.basename.to_s
+      if (absolute_path = Rails.root.join(path)).exist?
+        absolute_path.children.collect do |module_filename|
+          module_name = importmap_module_name_from(module_filename)
+          module_path = asset_path("#{absolute_path.basename.to_s}/#{module_filename.basename}")
 
-      absolute_path.children.collect do |module_filename|
-        module_name = importmap_module_name_from(module_filename)
-        %("#{module_name}": "#{asset_path("#{dirname}/#{module_filename.basename}")}")
+          %("#{module_name}": "#{module_path}")
+        end
       end
-    end.join(",\n")
+    end.compact.join(",\n")
   end
 
   private
