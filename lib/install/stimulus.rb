@@ -2,7 +2,7 @@ say "Copying Stimulus JavaScript"
 directory "#{__dir__}/app/assets/javascripts", "app/assets/javascripts"
 empty_directory_with_keep_file "app/assets/javascripts/libraries"
 
-say "Add app/javascripts to asset pipeline manifest"
+say "Add app/assets/javascripts to asset pipeline manifest"
 append_to_file Rails.root.join("app/assets/config/manifest.js").to_s, "//= link_tree ../javascripts\n"
 
 APPLICATION_LAYOUT_PATH = Rails.root.join("app/views/layouts/application.html.erb")
