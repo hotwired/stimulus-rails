@@ -20,4 +20,7 @@ jobs:
         bundle install --jobs 4 --retry 3
 
     - name: Test
-      run: bin/test test/**/*_test.rb
+      run: bin/test
+      env:
+        DEFAULT_TEST_EXCLUDE: ""
+        RAILS_ENV: "test"
