@@ -12,13 +12,19 @@ If you want to use Stimulus with a bundler, you should use [Webpacker](https://g
 2. Run `./bin/bundle install`.
 3. Run `./bin/rails stimulus:install`
 
-The last command will:
+If using the asset pipeline to manage JavaScript, the last command will:
 
-1. Create an example controller in `app/assets/javascripts/controllers/hello_controller.js`
+1. Create an example controller in `app/assets/javascripts/controllers/hello_controller.js`.
 2. Append the include tags to the `<head>` of your `app/views/layouts/application.html.erb`.
 3. Initialize your `importmap.json` in `app/assets/javascripts/importmap.json.erb`.
 4. Ensure JavaScript is included in your `app/assets/config/manifest.js` file for compilation.
 
+If using Webpacker to manage JavaScript, the last command will:
+
+1. Import the controllers directory in the application pack.
+2. Create a controllers directory at `app/javascripts/controllers`.
+3. Create an example controller in `app/javascripts/controllers/hello_controller.js`.
+4. Install the Stimulus NPM package.
 
 ## Usage
 
