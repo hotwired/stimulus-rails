@@ -8,5 +8,3 @@ directory "#{__dir__}/app/assets/javascripts/controllers", "#{Webpacker.config.s
 
 say "Installing all Stimulus dependencies"
 run "yarn add stimulus"
-
-say "Webpacker now supports Stimulus.js 🎉", :green
