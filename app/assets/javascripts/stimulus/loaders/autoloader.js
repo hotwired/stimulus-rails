@@ -2,20 +2,19 @@ import { Application } from "stimulus"
 
 const application = Application.start()
 
-function autoload() {
-  Array.from(document.querySelectorAll('[data-controller]')).forEach((element) => {
-    const controllerNames = element.attributes["data-controller"].value.split(" ")
-
-    controllerNames.forEach((controllerName) => {
-      let controllerFilename = `${controllerName}_controller`
-
-      import(controllerFilename).then((controllerModule) => {
-        application.register(controllerName, controllerModule.default)
-      }).catch(error => console.log(`Failed to autoload controller: ${controllerName}`))
-    })
-  })
+function autoloadControllers() {
+  controllerNamesInDocument().forEach(loadController)
 }
 
-autoload()
+function controllerNamesInDocument() {
+  return Array.from(document.querySelectorAll('[data-controller]')).map(e => e.attributes["data-controller"].value.split(" ")).flat()
+}
 
-window.addEventListener("turbo:load", autoload)
+function loadController(name) {
+  import(`${name}_controller`)
+    .then(module => application.register(name, module.default))
+    .catch(error => console.log(`Failed to autoload controller: ${name}`))
+}
+
+autoloadControllers()
+window.addEventListener("turbo:load", autoloadControllers)
