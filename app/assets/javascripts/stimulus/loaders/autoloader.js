@@ -13,7 +13,7 @@ function controllerNamesInDocument() {
 function loadController(name) {
   import(`${name}_controller`)
     .then(module => application.register(name, module.default))
-    .catch(error => console.log(`Failed to autoload controller: ${name}`))
+    .catch(error => console.log(`Failed to autoload controller: ${name}`, error))
 }
 
 autoloadControllers()
