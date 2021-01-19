@@ -7,7 +7,7 @@ function autoloadControllers() {
 }
 
 function controllerNamesInDocument() {
-  return Array.from(document.querySelectorAll('[data-controller]')).map(e => e.attributes["data-controller"].value.split(" ")).flat()
+  return Array.from(document.querySelectorAll("[data-controller]")).map(e => e.attributes["data-controller"].value.split(" ")).flat()
 }
 
 function loadController(name) {
