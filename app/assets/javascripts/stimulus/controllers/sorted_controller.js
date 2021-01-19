@@ -46,5 +46,5 @@ function compareElements(left, right) {
 }
 
 function getSortCode(element) {
-  return element.getAttribute("data-std-sorted-code") || 0
+  return element.getAttribute("data-std--sorted-code") || 0
 }

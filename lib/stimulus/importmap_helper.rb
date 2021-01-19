@@ -23,10 +23,10 @@ module Stimulus::ImportmapHelper
 
   def importmap_list_from_standard_controllers
     Pathname(__dir__).glob("../../app/assets/javascripts/stimulus/controllers/*.js").collect do |module_filename|
-      module_name = importmap_module_name_from(module_filename)
+      module_name = importmap_module_name_from(module_filename.basename)
       module_path = asset_path("stimulus/controllers/#{module_filename.basename}")
 
-      %("#{module_name}": "#{module_path}")
+      %("std/#{module_name}": "#{module_path}")
     end.compact.join(",\n")
   end
 
