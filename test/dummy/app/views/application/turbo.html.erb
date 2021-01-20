@@ -1,0 +1,5 @@
+<% content_for :head do %>
+  <%= javascript_include_tag "turbo", type: "module" %>
+<% end %>
+
+<%= link_to "Load", root_path(message: "Hello, from Turbo page") %>

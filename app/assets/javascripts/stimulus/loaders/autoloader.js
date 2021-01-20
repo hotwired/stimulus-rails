@@ -47,6 +47,6 @@ new MutationObserver((mutationsList) => {
       }
     }
   }
-}).observe(document.body, { attributeFilter: [controllerAttribute], subtree: true, childList: true })
+}).observe(document, { attributeFilter: [controllerAttribute], subtree: true, childList: true })
 
 autoloadControllersWithin(document)

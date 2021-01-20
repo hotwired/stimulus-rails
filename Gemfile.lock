@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/hotwired/turbo-rails.git
+  revision: 551890dba1aa23f1a84be77820f96a458723f1a9
+  branch: main
+  specs:
+    turbo-rails (0.5.7)
+      rails (>= 6.0.0)
+
 PATH
   remote: .
   specs:
@@ -168,6 +176,7 @@ DEPENDENCIES
   selenium-webdriver
   sqlite3
   stimulus-rails!
+  turbo-rails!
   webdrivers
 
 BUNDLED WITH
