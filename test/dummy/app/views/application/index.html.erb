@@ -1,6 +1,18 @@
-<%= tag.p "", data: { message_rendering_message_value: params[:message], controller: "
-  message-rendering
-" } %>
-<%= tag.p "", data: { namespace__message_rendering_message_value: params[:message], controller: "
-  namespace--message-rendering
-" } %>
+<section id="eager-loaded">
+  <%= tag.p "", data: { message_rendering_message_value: params[:message], controller: "
+    message-rendering
+  " } %>
+  <%= tag.p "", data: { namespace__message_rendering_message_value: params[:message], controller: "
+    namespace--message-rendering
+  " } %>
+</section>
+
+<section id="load-attribute" data-controller="loading" data-loading-controller-value="message-rendering" data-message-rendering-message-value="<%= params[:message] %>">
+  <button data-action="loading#loadController">Load</button>
+</section>
+
+<section id="load-descendant" data-controller="loading" data-loading-html-value="<%=
+  html_escape %(<div data-controller="message-rendering" data-message-rendering-message-value="#{params[:message]}"></div>)
+%>">
+  <button data-action="loading#injectController">Load</button>
+</section>

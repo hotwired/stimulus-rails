@@ -35,9 +35,16 @@ function registerController(name, module) {
 
 
 new MutationObserver((mutationsList) => {
-  for (const { attributeName, target } of mutationsList) {
-    if (attributeName == controllerAttribute && target.hasAttribute(controllerAttribute)) {
-      autoloadControllersWithin(target)
+  for (const { attributeName, target, type } of mutationsList) {
+    switch (type) {
+      case "attributes": {
+        if (attributeName == controllerAttribute && target.hasAttribute(controllerAttribute)) {
+          extractControllerNamesFrom(target).forEach(loadController)
+        }
+      }
+      case "childList": {
+        autoloadControllersWithin(target)
+      }
     }
   }
 }).observe(document.body, { attributeFilter: [controllerAttribute], subtree: true, childList: true })
