@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    stimulus-rails (0.2.0)
+    stimulus-rails (0.2.1)
       rails (>= 6.0.0)
 
 GEM
