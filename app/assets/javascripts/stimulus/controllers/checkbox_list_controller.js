@@ -20,7 +20,7 @@ export default class extends Controller {
       if (!checkbox.disabled) {
         checkbox.checked = checked
       }
-    });
+    })
   }
 
   get checkboxes() {
