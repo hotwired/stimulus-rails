@@ -1,52 +1,11 @@
 import { Application } from "stimulus"
 
-const application = Application.start()
-const { controllerAttribute } = application.schema
-const registeredControllers = {}
+const controllerFilename = name => `${name.replace(/--/g, "/").replace(/-/g, "_")}_controller`
 
-function autoloadControllersWithin(element) {
-  queryControllerNamesWithin(element).forEach(loadController)
-}
-
-function queryControllerNamesWithin(element) {
-  return Array.from(element.querySelectorAll(`[${controllerAttribute}]`)).map(extractControllerNamesFrom).flat()
-}
-
-function extractControllerNamesFrom(element) {
-  return element.getAttribute(controllerAttribute).split(/\s+/).filter(content => content.length)
-}
-
-function loadController(name) {
+const application = new Application()
+application.register_autoloader((name, app) => {
   import(controllerFilename(name))
-    .then(module => registerController(name, module))
+    .then(module => app.register(name, module.default))
     .catch(error => console.log(`Failed to autoload controller: ${name}`, error))
-}
-
-function controllerFilename(name) {
-  return `${name.replace(/--/g, "/").replace(/-/g, "_")}_controller`
-}
-
-function registerController(name, module) {
-  if (name in registeredControllers) return
-
-  application.register(name, module.default)
-  registeredControllers[name] = true
-}
-
-
-new MutationObserver((mutationsList) => {
-  for (const { attributeName, target, type } of mutationsList) {
-    switch (type) {
-      case "attributes": {
-        if (attributeName == controllerAttribute && target.hasAttribute(controllerAttribute)) {
-          extractControllerNamesFrom(target).forEach(loadController)
-        }
-      }
-      case "childList": {
-        autoloadControllersWithin(target)
-      }
-    }
-  }
-}).observe(document, { attributeFilter: [controllerAttribute], subtree: true, childList: true })
-
-autoloadControllersWithin(document)
+})
+application.start()
