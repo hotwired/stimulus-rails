@@ -25,4 +25,24 @@ class AutoloadTest < ApplicationSystemTestCase
       click_on("Load").then { assert_text "Hello World!" }
     end
   end
+
+  test "autoloads Controller modules when the page is navigated to" do
+    visit no_controllers_path
+
+    click_on "Load"
+    within "#eager-loaded" do
+      assert_text "Hello, from another page"
+      assert_text "Namespace: Hello, from another page"
+    end
+  end
+
+  test "autoloads Controller modules when the page is navigated to via Turbo" do
+    visit turbo_path
+
+    click_on "Load"
+    within "#eager-loaded" do
+      assert_text "Hello, from Turbo page"
+      assert_text "Namespace: Hello, from Turbo page"
+    end
+  end
 end
