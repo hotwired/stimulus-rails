@@ -1,6 +1,6 @@
 /*
 Stimulus 2.0.0
-Copyright © 2020 Basecamp, LLC
+Copyright © 2021 Basecamp, LLC
  */
 class EventListener {
   constructor(eventTarget, eventName, eventOptions) {
@@ -1364,6 +1364,7 @@ class Router {
     }
   }
   getContextForElementAndIdentifier(element, identifier) {
+    this.checkForMissingModule(identifier);
     const module = this.modulesByIdentifier.get(identifier);
     if (module) {
       return module.contexts.find((context => context.element == element));
@@ -1376,6 +1377,7 @@ class Router {
     return new Scope(this.schema, element, identifier, this.logger);
   }
   scopeConnected(scope) {
+    this.checkForMissingModule(scope.identifier);
     this.scopesByIdentifier.add(scope.identifier, scope);
     const module = this.modulesByIdentifier.get(scope.identifier);
     if (module) {
@@ -1387,6 +1389,11 @@ class Router {
     const module = this.modulesByIdentifier.get(scope.identifier);
     if (module) {
       module.disconnectContextForScope(scope);
+    }
+  }
+  checkForMissingModule(identifier) {
+    if (!this.modulesByIdentifier.has(identifier)) {
+      this.application.missing(identifier);
     }
   }
   connectModule(module) {
@@ -1404,8 +1411,7 @@ class Router {
 const defaultSchema = {
   controllerAttribute: "data-controller",
   actionAttribute: "data-action",
-  targetAttribute: "data-target",
-  classAttribute: "data-class"
+  targetAttribute: "data-target"
 };
 
 class Application {
@@ -1435,6 +1441,13 @@ class Application {
       identifier: identifier,
       controllerConstructor: controllerConstructor
     });
+  }
+  register_autoloader(autoloader) {
+    this.autoloader = autoloader;
+  }
+  missing(identifier) {
+    var _a;
+    (_a = this.autoloader) === null || _a === void 0 ? void 0 : _a.call(this, identifier, this);
   }
   load(head, ...rest) {
     const definitions = Array.isArray(head) ? head : [ head, ...rest ];
@@ -1506,7 +1519,7 @@ function propertiesForTargetDefinition(name) {
         if (target) {
           return target;
         } else {
-          throw new Error(`Missing target element "${this.identifier}.${name}"`);
+          throw new Error(`Missing target element "${name}" for "${this.identifier}" controller`);
         }
       }
     },
