@@ -38,7 +38,7 @@ new MutationObserver((mutationsList) => {
   for (const { attributeName, target, type } of mutationsList) {
     switch (type) {
       case "attributes": {
-        if (attributeName == controllerAttribute && target.hasAttribute(controllerAttribute)) {
+        if (attributeName == controllerAttribute && target.getAttribute(controllerAttribute)) {
           extractControllerNamesFrom(target).forEach(loadController)
         }
       }
