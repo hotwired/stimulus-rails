@@ -1,6 +1,6 @@
 module Stimulus::ImportmapHelper
   def importmap_list_with_stimulus_from(*paths)
-    [ %("stimulus": "#{asset_path("stimulus/libraries/stimulus")}"), importmap_list_from(*paths) ].join(",\n")
+    [ %("stimulus": "#{asset_path("stimulus/libraries/stimulus")}"), importmap_list_from(*paths) ].compact_blank.join(",\n")
   end
 
   def importmap_list_from(*paths)
