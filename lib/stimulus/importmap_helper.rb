@@ -28,6 +28,6 @@ module Stimulus::ImportmapHelper
     end
 
     def absolute_root_of(path)
-      path.start_with?(File::SEPARATOR) ? path : Rails.root.join(path)
+      (pathname = Pathname.new(path)).absolute? ? pathname : Rails.root.join(path)
     end
 end
