@@ -9,7 +9,7 @@ GIT
 PATH
   remote: .
   specs:
-    stimulus-rails (0.2.2)
+    stimulus-rails (0.2.3)
       rails (>= 6.0.0)
 
 GEM
@@ -180,4 +180,4 @@ DEPENDENCIES
   webdrivers
 
 BUNDLED WITH
-   2.2.3
+   2.2.5
