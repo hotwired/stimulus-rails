@@ -5,7 +5,7 @@ module Stimulus::ImportmapHelper
 
   def importmap_list_from(*paths)
     Array(paths).flat_map do |path|
-      if (absolute_path = Rails.root.join(path)).exist?
+      if (absolute_path = absolute_root_of(path)).exist?
         find_javascript_files_in_tree(absolute_path).collect do |filename|
           module_filename = filename.relative_path_from(absolute_path)
           module_name     = importmap_module_name_from(module_filename)
@@ -25,5 +25,9 @@ module Stimulus::ImportmapHelper
 
     def find_javascript_files_in_tree(path)
       Dir[path.join("**/*.js{,m}")].collect { |file| Pathname.new(file) }.select(&:file?)
+    end
+
+    def absolute_root_of(path)
+      path.start_with?(File::SEPARATOR) ? path : Rails.root.join(path)
     end
 end
