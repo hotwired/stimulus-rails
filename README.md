@@ -10,7 +10,7 @@ If you want to use Stimulus with a bundler, you should use [Webpacker](https://g
 
 1. Add the `stimulus-rails` gem to your Gemfile: `gem 'stimulus-rails'`
 2. Run `./bin/bundle install`.
-3. Run `./bin/rails stimulus:install`
+3. Run `./bin/rails stimulus:install` for asset pipeline or `./bin/rails webpacker:install:stimulus` for webpacker.
 
 If using the asset pipeline to manage JavaScript, the last command will:
 
