@@ -5,15 +5,25 @@ on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
+    name: Test against Rails ${{ matrix.rails }}
+    strategy:
+      matrix:
+        rails: [
+          '6.0.0',
+          '6.1.0',
+        ]
 
     steps:
     - uses: actions/checkout@v2
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: "2.7"
-        bundler-cache: true
+        bundler-cache: false
 
     - name: Install Dependencies
+      env:
+        RAILS_VERSION: ${{ matrix.rails }}
+        BUNDLE_PATH: "vendor/bundle-${{ matrix.rails }}"
       run: |
         sudo apt-get update
         sudo apt-get -yqq install libsqlite3-dev chromium-browser
@@ -22,5 +32,8 @@ jobs:
     - name: Test
       run: bin/test
       env:
+        RAILS_VERSION: ${{ matrix.rails }}
+        BUNDLE_PATH: "vendor/bundle-${{ matrix.rails }}"
         DEFAULT_TEST_EXCLUDE: ""
         RAILS_ENV: "test"
+
