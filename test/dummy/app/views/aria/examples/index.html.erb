@@ -1,0 +1,67 @@
+<% content_for :head do %>
+  <style>
+    dialog        { display: none; }
+    dialog[open]  { display: block; }
+  </style>
+<% end %>
+
+
+<button aria-expanded="false" aria-controls="dialog" type="button" data-controller="aria--expander" data-action="click->aria--expander#toggle">
+  Open Dialog
+</button>
+
+<dialog id="dialog" data-controller="aria--dialog">
+  <h1 id="dialog-title">Modal Dialog</h1>
+
+  <form>
+    <label for="first_input">First input</label>
+    <input id="first_input" type="text">
+
+    <input type="hidden">
+
+    <label for="second_input">Second input</label>
+    <input id="second_input" type="text">
+
+    <label for="third_input">Third input</label>
+    <input id="third_input" type="text">
+
+    <button type="submit" formmethod="dialog">Cancel</button>
+    <button type="submit">Submit</button>
+  </form>
+</dialog>
+
+<button type="button">Inert Button</button>
+
+<hr>
+
+<button aria-expanded="false" aria-controls="details" type="button" data-controller="aria--expander" data-action="click->aria--expander#toggle">
+  Open Details
+</button>
+
+<details id="details">
+  <summary>Summary</summary>
+
+  Details
+</details>
+
+<button aria-expanded="false" aria-controls="css-class" type="button" data-controller="aria--expander" data-aria--expander-toggle-class="expanded" data-action="click->aria--expander#toggle">
+  Toggle CSS class
+</button>
+
+<div id="css-class">CSS class</div>
+
+<button aria-controls="hidden" type="button" data-controller="aria--expander" data-action="click->aria--expander#toggle">
+  Toggle Hidden
+</button>
+
+<div id="hidden">Visible</div>
+
+<hr>
+
+<a href="#feed">Skip to #feed</a>
+
+<div role="feed" id="feed" data-controller="aria--feed" data-action="keydown->aria--feed#navigate">
+  <article>First article</article>
+  <article>Second article</article>
+  <article>Third article</article>
+</div>

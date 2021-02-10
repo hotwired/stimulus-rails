@@ -3,5 +3,9 @@ Rails.application.routes.draw do
   get "/no_controllers/turbo" => "application#turbo", as: :turbo
   get "/no_controllers" => "application#no_controllers", as: :no_controllers
 
+  namespace :aria do
+    resources :examples, only: :index
+  end
+
   root to: "application#index"
 end

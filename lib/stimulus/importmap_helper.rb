@@ -1,6 +1,10 @@
 module Stimulus::ImportmapHelper
   def importmap_list_with_stimulus_from(*paths)
-    [ %("stimulus": "#{asset_path("stimulus/libraries/stimulus")}"), importmap_list_from(*paths) ].reject(&:blank?).join(",\n")
+    [
+      %("stimulus": "#{asset_path("stimulus/libraries/stimulus")}"),
+      importmap_list_from_standard_controllers,
+      importmap_list_from(*paths)
+    ].reject(&:blank?).join(",\n")
   end
 
   def importmap_list_from(*paths)
@@ -14,6 +18,18 @@ module Stimulus::ImportmapHelper
           %("#{module_name}": "#{module_path}")
         end
       end
+    end.compact.join(",\n")
+  end
+
+  def importmap_list_from_standard_controllers
+    stimulus_root = Pathname(__dir__).join("../../app/assets/javascripts/stimulus/controllers")
+
+    stimulus_root.glob("**/*.js").collect do |absolute_path|
+      module_filename = absolute_path.relative_path_from(stimulus_root)
+      module_name     = importmap_module_name_from(module_filename)
+      module_path     = asset_path("stimulus/controllers/#{module_filename}")
+
+      %("#{module_name}": "#{module_path}")
     end.compact.join(",\n")
   end
 

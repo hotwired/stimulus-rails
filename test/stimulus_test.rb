@@ -33,14 +33,49 @@ class StimulusTest < ActionView::TestCase
     JSON
   end
 
+  test "importmap_list_from_standard_controller loads Stimulus stdlib files" do
+    assert_json_equal <<~JSON.strip, importmap_list_from_standard_controllers
+      "aria/dialog_controller": "/stimulus/controllers/aria/dialog_controller.js",
+      "aria/feed_controller": "/stimulus/controllers/aria/feed_controller.js",
+      "aria/expander_controller": "/stimulus/controllers/aria/expander_controller.js"
+    JSON
+  end
+
+  test "importmap_list_with_stimulus_from helper loads stimulus alongside dependent controllers" do
+    assert_json_equal <<~JSON.strip, importmap_list_with_stimulus_from("app/assets/javascripts/controllers")
+      "stimulus": "/stimulus/libraries/stimulus",
+      "aria/dialog_controller": "/stimulus/controllers/aria/dialog_controller.js",
+      "aria/feed_controller": "/stimulus/controllers/aria/feed_controller.js",
+      "aria/expander_controller": "/stimulus/controllers/aria/expander_controller.js",
+      "hello_controller": "/controllers/hello_controller.js",
+      "loading_controller": "/controllers/loading_controller.js",
+      "namespace/message_rendering_controller": "/controllers/namespace/message_rendering_controller.js",
+      "message_rendering_controller": "/controllers/message_rendering_controller.js"
+    JSON
+  end
+
   test "import map list helper with nothing to load" do
     assert_json_equal <<~JSON.strip, importmap_list_with_stimulus_from("app/components")
-      "stimulus": "/stimulus/libraries/stimulus"
+      "stimulus": "/stimulus/libraries/stimulus",
+      "aria/dialog_controller": "/stimulus/controllers/aria/dialog_controller.js",
+      "aria/feed_controller": "/stimulus/controllers/aria/feed_controller.js",
+      "aria/expander_controller": "/stimulus/controllers/aria/expander_controller.js"
+    JSON
+  end
+
+  test "importmap_list_with_stimulus_from helper can load stimulus stdlib controllers" do
+    assert_json_equal <<~JSON.strip, importmap_list_with_stimulus_from("app/assets/javascripts/stimulus/controllers")
+      "stimulus": "/stimulus/libraries/stimulus",
+      "aria/dialog_controller": "/stimulus/controllers/aria/dialog_controller.js",
+      "aria/feed_controller": "/stimulus/controllers/aria/feed_controller.js",
+      "aria/expander_controller": "/stimulus/controllers/aria/expander_controller.js"
     JSON
   end
 
   private
     def assert_json_equal(expected, actual)
       assert_equal JSON.parse("{ #{expected} }"), JSON.parse("{ #{actual} }")
+    rescue JSON::ParserError => e
+      flunk "expected both { #{expected.squish} } and { #{actual.squish} } to be valid JSON"
     end
 end

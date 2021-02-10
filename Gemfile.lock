@@ -1,4 +1,12 @@
 GIT
+  remote: https://github.com/citizensadvice/capybara_accessible_selectors.git
+  revision: d61971c609e3b019df6dc0ea0c9ce11433f3d0f7
+  branch: main
+  specs:
+    capybara_accessible_selectors (0.4.1)
+      capybara (~> 3)
+
+GIT
   remote: https://github.com/hotwired/turbo-rails.git
   revision: 551890dba1aa23f1a84be77820f96a458723f1a9
   branch: main
@@ -173,6 +181,7 @@ PLATFORMS
 
 DEPENDENCIES
   capybara
+  capybara_accessible_selectors!
   selenium-webdriver
   sqlite3
   stimulus-rails!
