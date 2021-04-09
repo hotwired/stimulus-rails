@@ -6,4 +6,8 @@ export default class extends Controller {
   connect() {
     this.element.innerHTML = `Namespace: ${this.messageValue}`
   }
+
+  sayHello() {
+    this.element.innerHTML = `Hello from Namespace: ${this.messageValue}`
+  }
 }

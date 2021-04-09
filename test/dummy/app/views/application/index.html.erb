@@ -5,6 +5,15 @@
   <%= tag.p "", data: { namespace__message_rendering_message_value: params[:message], controller: "
     namespace--message-rendering
   " } %>
+
+  <div data-controller="hello">
+    <input type="text" value="Waiting for Eager Load" data-hello-target="input">
+    <div data-hello-target="output"></div>
+
+    <button type="button" data-action="click->hello#greet">
+      Say Hello
+    </button>
+  </div>
 </section>
 
 <section id="load-attribute" data-controller="loading" data-loading-controller-value="message-rendering" data-message-rendering-message-value="<%= params[:message] %>">

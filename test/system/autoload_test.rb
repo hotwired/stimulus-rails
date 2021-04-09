@@ -10,6 +10,16 @@ class AutoloadTest < ApplicationSystemTestCase
     end
   end
 
+  test "waits for autoloading to complete" do
+    visit root_path
+
+    within "#eager-loaded" do
+      click_button "Say Hello"
+
+      assert_text "Hello, Waiting for Eager Load"
+    end
+  end
+
   test "autoloads Controller modules on the page lazily" do
     visit root_path(message: "Hello World!")
 
@@ -44,5 +54,15 @@ class AutoloadTest < ApplicationSystemTestCase
       assert_text "Hello, from Turbo page"
       assert_text "Namespace: Hello, from Turbo page"
     end
+  end
+
+  def click_button(*)
+    begin
+      assert_css "[data-stimulus-autoloading]"
+    rescue
+      # does not eagerly load any Stimulus
+    end
+    assert_no_css "[data-stimulus-autoloading]"
+    super
   end
 end
