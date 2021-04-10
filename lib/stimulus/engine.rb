@@ -5,7 +5,9 @@ module Stimulus
     config.autoload_once_paths = %w( #{root}/app/helpers )
 
     initializer "stimulus.assets" do
-      Rails.application.config.assets.precompile += %w( importmap.json stimulus/manifest )
+      Rails.application.config.respond_to?(:assets) do
+        Rails.application.config.assets.precompile += %w( importmap.json stimulus/manifest )
+      end
     end
 
     initializer "stimulus.helpers" do
