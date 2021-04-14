@@ -2,11 +2,11 @@ require "stimulus/importmap_helper"
 
 module Stimulus
   class Engine < ::Rails::Engine
-    config.autoload_once_paths = %w( #{root}/app/helpers )
+    config.autoload_once_paths = %w[#{root}/app/helpers]
 
     initializer "stimulus.assets" do
       Rails.application.config.respond_to?(:assets) do
-        Rails.application.config.assets.precompile += %w( importmap.json stimulus/manifest )
+        Rails.application.config.assets.precompile += %w[importmap.json stimulus/manifest]
       end
     end
 
@@ -15,8 +15,10 @@ module Stimulus
         helper Stimulus::StimulusHelper
       end
 
-      Rails.application.config.assets.configure do |env|
-        env.context_class.class_eval { include Stimulus::ImportmapHelper }
+      Rails.application.config.respond_to?(:assets) do
+        Rails.application.config.assets.configure do |env|
+          env.context_class.class_eval { include Stimulus::ImportmapHelper }
+        end
       end
     end
   end

@@ -1,6 +1,7 @@
 module Stimulus::ImportmapHelper
   def importmap_list_with_stimulus_from(*paths)
-    [ %("stimulus": "#{asset_path("stimulus/libraries/stimulus")}"), importmap_list_from(*paths) ].reject(&:blank?).join(",\n")
+    [%("stimulus": "#{asset_path('stimulus/libraries/stimulus')}"),
+     importmap_list_from(*paths)].reject(&:blank?).join(",\n")
   end
 
   def importmap_list_from(*paths)
@@ -18,16 +19,17 @@ module Stimulus::ImportmapHelper
   end
 
   private
-    # Strip off the extension and any versioning data for an absolute module name.
-    def importmap_module_name_from(filename)
-      filename.to_s.remove(filename.extname).split("@").first
-    end
 
-    def find_javascript_files_in_tree(path)
-      Dir[path.join("**/*.js{,m}")].collect { |file| Pathname.new(file) }.select(&:file?)
-    end
+  # Strip off the extension and any versioning data for an absolute module name.
+  def importmap_module_name_from(filename)
+    filename.to_s.remove(filename.extname).split("@").first
+  end
 
-    def absolute_root_of(path)
-      (pathname = Pathname.new(path)).absolute? ? pathname : Rails.root.join(path)
-    end
+  def find_javascript_files_in_tree(path)
+    Dir[path.join("**/*.js{,m}")].collect { |file| Pathname.new(file) }.select(&:file?)
+  end
+
+  def absolute_root_of(path)
+    (pathname = Pathname.new(path)).absolute? ? pathname : Rails.root.join(path)
+  end
 end
