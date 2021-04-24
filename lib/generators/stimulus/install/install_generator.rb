@@ -2,19 +2,44 @@ module Stimulus
   class InstallGenerator < ::Rails::Generators::Base
     source_root File.expand_path("templates", __dir__)
 
+    class_option :webpacker, type: :boolean, desc: "Install Stimulus for Webpacker",
+                             default: const_defined?(:Webpacker)
+
+    def install_stimulus
+      return unless webpacker?
+
+      say "Installing Stimulus"
+      run "yarn add stimulus"
+    end
+
     def copy_javascripts
       say "Copying Stimulus JavaScript"
       directory "app/assets/javascripts", javascripts_path
+      if sprockets?
+        remove_file File.join(javascripts_path, "/controllers/index.js")
+      else
+        remove_file File.join(javascripts_path, "/importmap.json.erb")
+        remove_dir File.join(javascripts_path, "/libraries")
+      end
     end
 
     def add_javascripts_to_pipeline
-      say "Add `app/assets/javascripts` to asset pipeline manifest"
-      append_to_file asset_manifest_path, <<~JS
-        //= link_tree ../javascripts
-      JS
+      if sprockets?
+        say "Add `app/assets/javascripts` to asset pipeline manifest"
+        append_to_file asset_manifest_path, <<~JS
+          //= link_tree ../javascripts
+        JS
+      else
+        say "Add Stimulus controllers import to Webpacker entry"
+        append_to_file entry_path, <<~JS
+          import "controllers"
+        JS
+      end
     end
 
     def add_stimulus_include_tags
+      return unless sprockets?
+
       if File.exist?(application_layout_path)
         say "Add Stimulus include tags in application layout"
         insert_into_file application_layout_path, '\1\2<%= stimulus_include_tags %>',
@@ -26,11 +51,15 @@ module Stimulus
     end
 
     def disable_development_debug_mode
+      return unless sprockets?
+
       say "Turn off development debug mode"
       comment_lines development_config_path, /config.assets.debug = true/
     end
 
     def disable_rack_mini_profiler
+      return unless sprockets?
+
       say "Turn off rack-mini-profiler"
       comment_lines "Gemfile", /rack-mini-profiler/ if File.exist?("Gemfile")
       comment_lines gemspec_path, /rack-mini-profiler/ if File.exist?(gemspec_path)
@@ -44,6 +73,14 @@ module Stimulus
 
     private
 
+    def sprockets?
+      !webpacker?
+    end
+
+    def webpacker?
+      options[:webpacker]
+    end
+
     def engine?
       defined? ENGINE_ROOT
     end
@@ -54,6 +91,10 @@ module Stimulus
 
     def asset_manifest_path
       File.join("app/assets/config", engine? ? "#{underscored_name}_manifest.js" : "manifest.js")
+    end
+
+    def entry_path
+      File.join(Webpacker.config.source_entry_path, "application.js")
     end
 
     def gemspec_path
