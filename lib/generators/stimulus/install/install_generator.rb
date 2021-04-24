@@ -5,7 +5,6 @@ module Stimulus
     def copy_javascripts
       say "Copying Stimulus JavaScript"
       directory "app/assets/javascripts", javascripts_path
-      empty_directory_with_keep_file "app/assets/javascripts/libraries"
     end
 
     def add_javascripts_to_pipeline
