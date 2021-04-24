@@ -5,8 +5,8 @@ namespace :stimulus do
   end
 
   namespace :install do
-    desc "Install Stimulus with the asset pipeline"
-    task :asset_pipeline do
+    desc "Install Stimulus with Sprockets"
+    task :sprockets do
       Rails::Command.invoke :generate, ["stimulus:install", "--no-webpacker"]
     end
 
