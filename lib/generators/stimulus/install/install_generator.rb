@@ -22,7 +22,7 @@ module Stimulus
                          before: /(?<=\S)(?<!<%= stimulus_include_tags %>)(\n( {2,3}|\t)*)?<\/head>/
       else
         say "Default application.html.erb is missing!", :red
-        say "        Add <%= stimulus_include_tags %> within the <head> tag in your custom layout."
+        print_wrapped "Add <%= stimulus_include_tags %> within the <head> tag in your custom layout.", indent: 8
       end
     end
 
