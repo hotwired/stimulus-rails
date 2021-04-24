@@ -18,7 +18,8 @@ module Stimulus
     def add_stimulus_include_tags
       if File.exist?(application_layout_path)
         say "Add Stimulus include tags in application layout"
-        insert_into_file application_layout_path, "\n    <%= stimulus_include_tags %>", before: /\s*<\/head>/
+        insert_into_file application_layout_path, '\1\2<%= stimulus_include_tags %>',
+                         before: /(?<=\S)(?<!<%= stimulus_include_tags %>)(\n( {2,3}|\t)*)?<\/head>/
       else
         say "Default application.html.erb is missing!", :red
         say "        Add <%= stimulus_include_tags %> within the <head> tag in your custom layout."
