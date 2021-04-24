@@ -35,7 +35,12 @@ module Stimulus
       say "Turn off rack-mini-profiler"
       comment_lines "Gemfile", /rack-mini-profiler/ if File.exist?("Gemfile")
       comment_lines gemspec_path, /rack-mini-profiler/ if File.exist?(gemspec_path)
-      run "bin/bundle", capture: true
+
+      say_status :run, "bundle install"
+      Gem.bin_path("bundler", "bundle").then do |bin_path|
+        require "bundler"
+        Bundler.with_original_env { system %Q["#{Gem.ruby}" "#{bin_path}" install] }
+      end
     end
 
     private
