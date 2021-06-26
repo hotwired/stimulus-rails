@@ -11,8 +11,10 @@ module Stimulus
     end
 
     initializer "stimulus.helpers" do
-      ActiveSupport.on_load(:action_controller_base) do
-        helper Stimulus::StimulusHelper
+      Rails.application.reloader.to_prepare do
+        ActiveSupport.on_load(:action_controller_base) do
+          helper Stimulus::StimulusHelper
+        end
       end
 
       if Rails.application.config.respond_to?(:assets)
