@@ -2,7 +2,7 @@ require "stimulus/importmap_helper"
 
 module Stimulus
   class Engine < ::Rails::Engine
-    config.autoload_once_paths = %w( #{root}/app/helpers )
+    config.autoload_once_paths = %W( #{root}/app/helpers )
 
     initializer "stimulus.assets" do
       if Rails.application.config.respond_to?(:assets)
