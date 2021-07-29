@@ -1,24 +1,8 @@
-require "stimulus/importmap_helper"
-
 module Stimulus
   class Engine < ::Rails::Engine
-    config.autoload_once_paths = %W( #{root}/app/helpers )
-
     initializer "stimulus.assets" do
       if Rails.application.config.respond_to?(:assets)
-        Rails.application.config.assets.precompile += %w( importmap.json stimulus/manifest )
-      end
-    end
-
-    initializer "stimulus.helpers" do
-      ActiveSupport.on_load(:action_controller_base) do
-        helper Stimulus::StimulusHelper
-      end
-
-      if Rails.application.config.respond_to?(:assets)
-        Rails.application.config.assets.configure do |env|
-          env.context_class.class_eval { include Stimulus::ImportmapHelper }
-        end
+        Rails.application.config.assets.precompile += %w( stimulus/stimulus stimulus/autoloader )
       end
     end
   end
