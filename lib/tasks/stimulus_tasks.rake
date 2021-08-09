@@ -5,8 +5,10 @@ namespace :stimulus do
   task :install do
     if defined?(Webpacker::Engine)
       Rake::Task["stimulus:install:webpacker"].invoke
-    else
+    elsif defined?(Importmap)
       Rake::Task["stimulus:install:asset_pipeline"].invoke
+    else
+      puts "You must either be running Webpacker or importmap-rails to use this gem."
     end
   end
 

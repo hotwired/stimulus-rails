@@ -1,9 +1,7 @@
-APPLICATION_LAYOUT_PATH = Rails.root.join("app/views/layouts/application.html.erb")
+APP_JS_ROOT = Rails.root.join("app/assets/javascripts")
 
-if APPLICATION_LAYOUT_PATH.exist?
-  say "Add Stimulus include tags in application layout"
-  insert_into_file Rails.root.join("app/views/layouts/application.html.erb").to_s, "\n    <%= stimulus_include_tags %>", before: /\s*<\/head>/
-else
-  say "Default application.html.erb is missing!", :red
-  say "        Add <%= stimulus_include_tags %> within the <head> tag in your custom layout."
-end
+say "Import Stimulus autoloader in existing app/assets/javascripts/application.js"
+append_to_file APP_JS_ROOT.join("application.js"), %(import "@hotwired/stimulus-autoloader"\n)
+
+say "Creating controllers directory"
+copy_file "#{__dir__}/app/assets/javascripts/controllers/hello_controller.js", APP_JS_ROOT.join("controllers/hello_controller.js")
