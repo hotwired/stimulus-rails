@@ -1,23 +1,7 @@
-say "Copying Stimulus JavaScript"
-directory "#{__dir__}/app/assets/javascripts", "app/assets/javascripts"
-empty_directory_with_keep_file "app/assets/javascripts/libraries"
+APP_JS_ROOT = Rails.root.join("app/assets/javascripts")
 
-say "Add app/assets/javascripts to asset pipeline manifest"
-append_to_file Rails.root.join("app/assets/config/manifest.js").to_s, "//= link_tree ../javascripts\n"
+say "Import Stimulus autoloader in existing app/assets/javascripts/application.js"
+append_to_file APP_JS_ROOT.join("application.js"), %(import "@hotwired/stimulus-autoloader"\n)
 
-APPLICATION_LAYOUT_PATH = Rails.root.join("app/views/layouts/application.html.erb")
-
-if APPLICATION_LAYOUT_PATH.exist?
-  say "Add Stimulus include tags in application layout"
-  insert_into_file Rails.root.join("app/views/layouts/application.html.erb").to_s, "\n    <%= stimulus_include_tags %>", before: /\s*<\/head>/
-else
-  say "Default application.html.erb is missing!", :red
-  say "        Add <%= stimulus_include_tags %> within the <head> tag in your custom layout."
-end
-
-say "Turn off development debug mode"
-comment_lines Rails.root.join("config/environments/development.rb"), /config.assets.debug = true/
-
-say "Turn off rack-mini-profiler"
-comment_lines Rails.root.join("Gemfile"), /rack-mini-profiler/
-run "bin/bundle", capture: true
+say "Creating controllers directory"
+copy_file "#{__dir__}/app/assets/javascripts/controllers/hello_controller.js", APP_JS_ROOT.join("controllers/hello_controller.js")

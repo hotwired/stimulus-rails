@@ -1,4 +1,4 @@
-import { Application } from "stimulus"
+import { Application } from "@hotwired/stimulus"
 
 const application = Application.start()
 const { controllerAttribute } = application.schema
@@ -23,7 +23,7 @@ function loadController(name) {
 }
 
 function controllerFilename(name) {
-  return `${name.replace(/--/g, "/").replace(/-/g, "_")}_controller`
+  return `controllers/${name.replace(/--/g, "/").replace(/-/g, "_")}_controller`
 }
 
 function registerController(name, module) {

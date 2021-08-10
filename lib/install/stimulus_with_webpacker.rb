@@ -1,7 +1,5 @@
 say "Appending Stimulus setup code to #{Webpacker.config.source_entry_path}/application.js"
-append_to_file "#{Webpacker.config.source_entry_path}/application.js" do
-  "\n" + open("#{__dir__}/application.js").read
-end
+append_to_file "#{Webpacker.config.source_entry_path}/application.js", %(\nimport "controllers")
 
 say "Creating controllers directory"
 directory "#{__dir__}/app/assets/javascripts/controllers", "#{Webpacker.config.source_path}/controllers"
