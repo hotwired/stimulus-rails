@@ -9,8 +9,8 @@ module Stimulus
     initializer "stimulus.importmap" do
       if Rails.application.config.respond_to?(:importmap)
         Rails.application.config.importmap.paths.tap do |paths|
-          paths.asset "@hotwired/stimulus", path: "stimulus"
-          paths.asset "@hotwired/stimulus-autoloader", path: "stimulus-autoloader"
+          paths.asset "@hotwired/stimulus", path: "stimulus.js"
+          paths.asset "@hotwired/stimulus-autoloader", path: "stimulus-autoloader.js"
         end
       end
     end
