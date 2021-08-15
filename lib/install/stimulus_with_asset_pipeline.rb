@@ -8,6 +8,7 @@ say "Creating controllers directory"
 copy_file "#{__dir__}/app/assets/javascripts/controllers/hello_controller.js", APP_JS_ROOT.join("controllers/hello_controller.js")
 
 if IMPORTMAP_PATH.exist?
+  say "Pin @hotwired/stimulus and @hotwired/stimulus-autoloader in config/initializers/importmap.rb"
   insert_into_file \
     IMPORTMAP_PATH.to_s, 
     %(  pin "@hotwired/stimulus", to: "stimulus.js"\n  pin "@hotwired/stimulus-autoloader", to: "stimulus-autoloader.js"\n\n),
