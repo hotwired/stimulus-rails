@@ -7,7 +7,7 @@ if APP_JS_PATH.exist?
   append_to_file APP_JS_PATH, %(\nimport "@hotwired/stimulus-importmap-autoloader"\n)
 else
   say <<~INSTRUCTIONS, :red
-    You must import @hotwire/stimulus and @hotwire/stimulus-importmap-autoloader in your application.js.
+    You must import @hotwired/stimulus and @hotwired/stimulus-importmap-autoloader in your application.js.
   INSTRUCTIONS
 end
 
