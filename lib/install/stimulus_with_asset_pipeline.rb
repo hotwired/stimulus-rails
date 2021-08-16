@@ -3,8 +3,8 @@ APP_JS_PATH = APP_JS_ROOT.join("application.js")
 IMPORTMAP_PATH = Rails.root.join("config/initializers/importmap.rb")
 
 if APP_JS_PATH.exist?
-  say "Import Stimulus autoloader in existing app/javascript/application.js"
-  append_to_file APP_JS_PATH, %(\nimport "@hotwired/stimulus-autoloader"\n)
+  say "Import Stimulus importmap autoloader in existing app/javascript/application.js"
+  append_to_file APP_JS_PATH, %(\nimport "@hotwired/stimulus-importmap-autoloader"\n)
 else
   say <<~INSTRUCTIONS, :red
     You must import @hotwire/stimulus and @hotwire/stimulus-importmap-autoloader in your application.js.
