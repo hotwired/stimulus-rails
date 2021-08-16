@@ -2,7 +2,7 @@ import { Application } from "@hotwired/stimulus"
 
 const application = Application.start()
 
-const importmap = await JSON.parse(document.querySelector("script[type=importmap]").text)
+const importmap = JSON.parse(document.querySelector("script[type=importmap]").text)
 const importedControllerPaths = Object.keys(importmap.imports).filter((e) => e.match("controllers/"))
 
 importedControllerPaths.forEach(function(path) {
