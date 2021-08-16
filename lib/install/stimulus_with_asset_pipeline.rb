@@ -18,7 +18,7 @@ if IMPORTMAP_PATH.exist?
   say "Pin @hotwired/stimulus and @hotwired/stimulus-importmap-autoloader in config/initializers/importmap.rb"
   insert_into_file \
     IMPORTMAP_PATH.to_s, 
-    %(  pin "@hotwired/stimulus", to: "stimulus.js"\n  pin "@hotwired/stimulus-importmap-autoloader", to: "stimulus-importmap-autoloader.js"\n\n),
+    %(  pin "@hotwired/stimulus", to: "stimulus.js"\n  pin "@hotwired/stimulus-importmap-autoloader", to: "stimulus-importmap-autoloader.js"\n  pin_all_from "app/javascript/controllers", under: "controllers"\n\n),
     after: "Rails.application.config.importmap.draw do\n"
 else
   say <<~INSTRUCTIONS, :red
