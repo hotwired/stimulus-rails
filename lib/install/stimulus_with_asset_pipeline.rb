@@ -1,6 +1,6 @@
 APP_JS_ROOT = Rails.root.join("app/javascript")
 APP_JS_PATH = APP_JS_ROOT.join("application.js")
-IMPORTMAP_PATH = Rails.root.join("config/initializers/importmap.rb")
+IMPORTMAP_PATH = Rails.root.join("config/importmap.rb")
 
 if APP_JS_PATH.exist?
   say "Import Stimulus importmap autoloader in existing app/javascript/application.js"
@@ -15,7 +15,7 @@ say "Creating controllers directory"
 copy_file "#{__dir__}/app/javascript/controllers/hello_controller.js", APP_JS_ROOT.join("controllers/hello_controller.js")
 
 if IMPORTMAP_PATH.exist?
-  say "Pin @hotwired/stimulus and @hotwired/stimulus-importmap-autoloader in config/initializers/importmap.rb"
+  say "Pin @hotwired/stimulus and @hotwired/stimulus-importmap-autoloader in config/importmap.rb"
   insert_into_file \
     IMPORTMAP_PATH.to_s, 
     %(  pin "@hotwired/stimulus", to: "stimulus.js"\n  pin "@hotwired/stimulus-importmap-autoloader", to: "stimulus-importmap-autoloader.js"\n  pin_all_from "app/javascript/controllers", under: "controllers"\n\n),
