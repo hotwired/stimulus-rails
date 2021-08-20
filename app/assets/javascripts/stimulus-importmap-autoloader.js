@@ -6,7 +6,7 @@ const importmap = JSON.parse(document.querySelector("script[type=importmap]").te
 const importedControllerPaths = Object.keys(importmap.imports).filter((e) => e.match("controllers/"))
 
 importedControllerPaths.forEach(function(path) {
-  const name = path.replace("controllers/", "").replace("_controller", "").replace("/", "--").replace("_", "-")
+  const name = path.replace("controllers/", "").replace("_controller", "").replace("/", "--").replace(/_/g, "-")
 
   import(path)
     .then(module => application.register(name, module.default))
