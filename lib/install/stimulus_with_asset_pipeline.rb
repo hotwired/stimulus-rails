@@ -22,6 +22,6 @@ if IMPORTMAP_PATH.exist?
     after: "Rails.application.config.importmap.draw do\n"
 else
   say <<~INSTRUCTIONS, :red
-    You must add @rails/actiontext and trix to your importmap to reference them via ESM.
+    You must add @hotwired/stimulus and @hotwired/stimulus-importmap-autoloader to your importmap to reference them via ESM.
   INSTRUCTIONS
 end
