@@ -1,7 +1,6 @@
 import { Application } from "@hotwired/stimulus"
 
 function registerControllersFrom(under) {
-  const importmap = JSON.parse(document.querySelector("script[type=importmap]").text).imports
   const paths = Object.keys(importmap).filter(path => path.match(new RegExp(`^${under}/.*_controller$`)))
   paths.forEach(path => registerControllerFromPath(path, under))
 }
@@ -15,6 +14,8 @@ function registerControllerFromPath(path, under) {
 }
 
 const application = Application.start()
+const importmap = JSON.parse(document.querySelector("script[type=importmap]").text).imports
+
 registerControllersFrom("controllers")
 
 export { application, registerControllersFrom }
