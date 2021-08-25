@@ -1,14 +1,20 @@
 import { Application } from "@hotwired/stimulus"
 
-const application = Application.start()
+function registerControllersFrom(under) {
+  const importmap = JSON.parse(document.querySelector("script[type=importmap]").text).imports
+  const paths = Object.keys(importmap).filter(path => path.match(new RegExp(`^${under}/.*_controller$`)))
+  paths.forEach(path => registerControllerFromPath(path, under))
+}
 
-const importmap = JSON.parse(document.querySelector("script[type=importmap]").text)
-const importedControllerPaths = Object.keys(importmap.imports).filter((e) => e.match("controllers/"))
-
-importedControllerPaths.forEach(function(path) {
-  const name = path.replace("controllers/", "").replace("_controller", "").replace(/\//g, "--").replace(/_/g, "-")
+function registerControllerFromPath(path, under) {
+  const name = path.replace(`${under}/`, "").replace("_controller", "").replace(/\//g, "--").replace(/_/g, "-")
 
   import(path)
     .then(module => application.register(name, module.default))
-    .catch(error => console.log(`Failed to autoload controller: ${name}`, error))
-})
+    .catch(error => console.log(`Failed to register controller: ${name} (${path})`, error))
+}
+
+const application = Application.start()
+registerControllersFrom("controllers")
+
+export { application, registerControllersFrom }
