@@ -10,4 +10,4 @@ git push
 git tag v$VERSION
 git push --tags
 gem build stimulus-rails.gemspec
-gem push "stimulus-rails-$VERSION.gem"
+gem push "stimulus-rails-$VERSION.gem" --host https://rubygems.org
