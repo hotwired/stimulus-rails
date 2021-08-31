@@ -16,10 +16,9 @@ copy_file "#{__dir__}/app/javascript/controllers/hello_controller.js", APP_JS_RO
 
 if IMPORTMAP_PATH.exist?
   say "Pin @hotwired/stimulus and @hotwired/stimulus-importmap-autoloader in config/importmap.rb"
-  insert_into_file \
+  append_to_file \
     IMPORTMAP_PATH.to_s, 
-    %(  pin "@hotwired/stimulus", to: "stimulus.js"\n  pin "@hotwired/stimulus-importmap-autoloader", to: "stimulus-importmap-autoloader.js"\n  pin_all_from "app/javascript/controllers", under: "controllers"\n\n),
-    after: "Rails.application.config.importmap.draw do\n"
+    %(pin "@hotwired/stimulus", to: "stimulus.js"\npin "@hotwired/stimulus-importmap-autoloader", to: "stimulus-importmap-autoloader.js"\npin_all_from "app/javascript/controllers", under: "controllers"\n)
 else
   say <<~INSTRUCTIONS, :red
     You must add @hotwired/stimulus and @hotwired/stimulus-importmap-autoloader to your importmap to reference them via ESM.
