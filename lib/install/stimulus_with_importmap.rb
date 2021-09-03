@@ -6,7 +6,7 @@ copy_file "#{__dir__}/app/javascript/controllers/hello_controller.js",
   "app/javascript/controllers/hello_controller.js"
 
 say "Import Stimulus controllers"
-append_to_file "app/javascript/application.js", %(import "./controllers"\n)
+append_to_file "app/javascript/application.js", %(import "controllers"\n)
 
 say "Pin Stimulus"
 append_to_file "config/importmap.rb" do <<-RUBY
