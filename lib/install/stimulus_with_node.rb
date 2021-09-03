@@ -16,4 +16,4 @@ say "Import Stimulus controllers"
 append_to_file "app/javascript/application.js", %(import "./controllers"\n)
 
 say "Install Stimulus"
-run "npm i @hotwired/stimulus"
+run "yarn add @hotwired/stimulus"
