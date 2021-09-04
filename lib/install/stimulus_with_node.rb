@@ -12,8 +12,12 @@ end
 copy_file "#{__dir__}/app/javascript/controllers/hello_controller.js",
   "app/javascript/controllers/hello_controller.js"
 
-say "Import Stimulus controllers"
-append_to_file "app/javascript/application.js", %(import "./controllers"\n)
+if (Rails.root.join("app/javascript/application.js")).exist?
+  say "Import Stimulus controllers"
+  append_to_file "app/javascript/application.js", %(import "./controllers"\n)
+else
+  say %(You must import "./controllers" in your JavaScript entrypoint), :red
+end
 
 say "Install Stimulus"
 run "yarn add @hotwired/stimulus"
