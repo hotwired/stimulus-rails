@@ -11,31 +11,24 @@ Stimulus for Rails makes it easy to use this modest framework with the asset pip
 2. Run `./bin/bundle install`.
 3. Run `./bin/rails stimulus:install`
 
-If using the asset pipeline to manage JavaScript, the last command will:
-
-1. Create an example controller in `app/assets/javascripts/controllers/hello_controller.js`.
-2. Append `import "@hotwired/stimulus-autoloader"` to your `app/assets/javascripts/application.js` entrypoint.
-
-Make sure you've already installed `importmap-rails` and that it's referenced before `stimulus-rails` (or `hotwire-rails`) in your Gemfile.
-
-If using Webpacker to manage JavaScript, the last command will:
-
-1. Import the controllers directory in the application pack.
-2. Create a controllers directory at `app/javascripts/controllers`.
-3. Create an example controller in `app/javascripts/controllers/hello_controller.js`.
-4. Install the Stimulus NPM package.
+The installer will automatically detect whether you're using an import map or node to manage your application's JavaScript. If you're using an import map, the Stimulus dependencies will be pinned to the versions of the library included with this gem. If you're using node, yarn will add the dependencies to your package.json file.
 
 
 ## Usage
 
-With the installation done, you'll automatically have activated Stimulus through the controller autoloader. You can now easily add new Stimulus controllers that'll be loaded via ESM dynamic imports.
+The installer amends your JavaScript entry point at `app/javascript/application.js` to import the `app/javascript/controllers/index.js` file, which is responsible for setting up your Stimulus application and registering your controllers.
 
-For example, a more advanced `hello_controller` could look like this:
+With an import-mapped application, controllers are automatically pinned and registered based on the file structure. With a node application, controllers need to be imported and registered directly in the index.js file, but this is done automatically using either the Stimulus generator (`./bin/rails generate stimulus [controller]`) or the dedicated `stimulus:manifest:update` task. Either will overwrite the `controllers/index.js` file.
+
+You're encouraged to use the generator to add new controllers like so:
 
 ```javascript
-// app/assets/javascripts/controllers/hello_controller.js
-import { Controller } from "stimulus"
+// Run "./bin/rails g stimulus hello" to create the file and update the index, then amend:
 
+// app/assets/javascripts/controllers/hello_controller.js
+import { Controller } from "@hotwired/stimulus"
+
+// Connects with data-controller="hello"
 export default class extends Controller {
   static targets = [ "name", "output" ]
 
