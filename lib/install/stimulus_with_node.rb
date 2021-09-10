@@ -1,14 +1,9 @@
 say "Create controllers directory"
 empty_directory "app/javascript/controllers"
-
-if Rails.root.join("config/webpacker.yml").exist?
-  copy_file "#{__dir__}/app/javascript/controllers/index_for_webpacker.js",
-    "app/javascript/controllers/index.js"
-else
-  copy_file "#{__dir__}/app/javascript/controllers/index_for_node.js",
-    "app/javascript/controllers/index.js"
-end
-
+copy_file "#{__dir__}/app/javascript/controllers/index_for_node.js",
+  "app/javascript/controllers/index.js"
+copy_file "#{__dir__}/app/javascript/controllers/application.js",
+  "app/javascript/controllers/application.js"
 copy_file "#{__dir__}/app/javascript/controllers/hello_controller.js",
   "app/javascript/controllers/hello_controller.js"
 
