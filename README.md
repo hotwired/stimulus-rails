@@ -11,7 +11,7 @@ Stimulus for Rails makes it easy to use this modest framework with the asset pip
 2. Run `./bin/bundle install`.
 3. Run `./bin/rails stimulus:install`
 
-The installer will automatically detect whether you're using an import map or node to manage your application's JavaScript. If you're using an import map, the Stimulus dependencies will be pinned to the versions of the library included with this gem. If you're using node, yarn will add the dependencies to your package.json file.
+The installer will automatically detect whether you're using an [import map](https://github.com/rails/importmap-rails) or [JavaScript bundler](https://github.com/rails/jsbundling-rails) to manage your application's JavaScript. If you're using an import map, the Stimulus dependencies will be pinned to the versions of the library included with this gem. If you're using node, yarn will add the dependencies to your package.json file.
 
 
 ## Usage
