@@ -2,7 +2,7 @@
 
 [Stimulus](https://stimulus.hotwired.dev) is a JavaScript framework with modest ambitions. It doesn’t seek to take over your entire front-end in fact, it’s not concerned with rendering HTML at all. Instead, it’s designed to augment your HTML with just enough behavior to make it shine. Stimulus pairs beautifully with Turbo to provide a complete solution for fast, compelling applications with a minimal amount of effort. Together they form the core of [Hotwire](https://hotwired.dev).
 
-Stimulus for Rails makes it easy to use this modest framework with the asset pipeline and ES6/ESM in the browser. It relies on `importmap-rails` to make stimulus available via ESM. Make sure to install this first!
+Stimulus for Rails makes it easy to use this modest framework with the asset pipeline and ES6/ESM in the browser. It relies on either `importmap-rails` to make Stimulus available via ESM or a node-capable Rails (like via `jsbundling-rails`) to include Stimulus in the bundle. Make sure to install one of these first!
 
 
 ## Installation
@@ -11,7 +11,7 @@ Stimulus for Rails makes it easy to use this modest framework with the asset pip
 2. Run `./bin/bundle install`.
 3. Run `./bin/rails stimulus:install`
 
-The installer will automatically detect whether you're using an [import map](https://github.com/rails/importmap-rails) or [JavaScript bundler](https://github.com/rails/jsbundling-rails) to manage your application's JavaScript. If you're using an import map, the Stimulus dependencies will be pinned to the versions of the library included with this gem. If you're using node, yarn will add the dependencies to your package.json file.
+The installer will automatically detect whether you're using an [import map](https://github.com/rails/importmap-rails) or [JavaScript bundler](https://github.com/rails/jsbundling-rails) to manage your application's JavaScript. If you're using an import map, the Stimulus dependencies will be pinned to the versions of the library included with this gem. If you're using node, yarn will add the dependencies to your `package.json` file.
 
 
 ## Usage
