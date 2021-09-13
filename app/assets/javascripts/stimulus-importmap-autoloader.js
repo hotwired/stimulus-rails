@@ -14,7 +14,7 @@ export function parseImportmapJson() {
 
 function registerControllerFromPath(path, under, application) {
   const name = path
-    .replace(`${under}/`, "")
+    .replace(new RegExp(`^${under}/`), "")
     .replace("_controller", "")
     .replace(/\//g, "--")
     .replace(/_/g, "-")
