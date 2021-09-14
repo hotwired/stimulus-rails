@@ -22,6 +22,6 @@ application.register("#{tag_name}", #{controller_class_name})
   def extract_controllers_from(directory)
     (directory.children.select { |e| e.to_s =~ /_controller.js$/ } +
       directory.children.select(&:directory?).collect { |d| extract_controllers_from(d) }
-    ).flatten
+    ).flatten.sort
   end
 end
