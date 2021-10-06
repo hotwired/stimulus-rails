@@ -30,7 +30,7 @@ jobs:
         bundle install --jobs 4 --retry 3
 
     - name: Test
-      run: bin/test
+      run: bundle exec rake
       env:
         RAILS_VERSION: ${{ matrix.rails }}
         BUNDLE_PATH: "vendor/bundle-${{ matrix.rails }}"
