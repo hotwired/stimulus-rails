@@ -1,3 +1,3 @@
 module Stimulus
-  VERSION = ""
+  VERSION = "0.6.2"
 end
