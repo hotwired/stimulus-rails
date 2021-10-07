@@ -50,3 +50,5 @@ new MutationObserver((mutationsList) => {
 }).observe(document, { attributeFilter: [controllerAttribute], subtree: true, childList: true })
 
 autoloadControllersWithin(document)
+
+console.warn("stimulus-autoload.js has been deprecated in favor of stimulus-loading.js")
