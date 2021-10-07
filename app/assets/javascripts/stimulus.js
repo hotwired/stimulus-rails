@@ -2,7 +2,7 @@
 //= link ./stimulus-importmap-autoloader.js
 
 /*
-Stimulus 3.0.0
+Stimulus 3.0.1
 Copyright © 2021 Basecamp, LLC
  */
 class EventListener {
@@ -218,6 +218,7 @@ const defaultEventNames = {
     "a": e => "click",
     "button": e => "click",
     "form": e => "submit",
+    "details": e => "toggle",
     "input": e => e.getAttribute("type") == "submit" ? "click" : "input",
     "select": e => "change",
     "textarea": e => "input"
@@ -314,6 +315,7 @@ class Binding {
 
 class ElementObserver {
     constructor(element, delegate) {
+        this.mutationObserverInit = { attributes: true, childList: true, subtree: true };
         this.element = element;
         this.started = false;
         this.delegate = delegate;
@@ -323,8 +325,19 @@ class ElementObserver {
     start() {
         if (!this.started) {
             this.started = true;
-            this.mutationObserver.observe(this.element, { attributes: true, childList: true, subtree: true });
+            this.mutationObserver.observe(this.element, this.mutationObserverInit);
             this.refresh();
+        }
+    }
+    pause(callback) {
+        if (this.started) {
+            this.mutationObserver.disconnect();
+            this.started = false;
+        }
+        callback();
+        if (!this.started) {
+            this.mutationObserver.observe(this.element, this.mutationObserverInit);
+            this.started = true;
         }
     }
     stop() {
@@ -451,6 +464,9 @@ class AttributeObserver {
     }
     start() {
         this.elementObserver.start();
+    }
+    pause(callback) {
+        this.elementObserver.pause(callback);
     }
     stop() {
         this.elementObserver.stop();
@@ -676,6 +692,9 @@ class TokenListObserver {
     }
     start() {
         this.attributeObserver.start();
+    }
+    pause(callback) {
+        this.attributeObserver.pause(callback);
     }
     stop() {
         this.attributeObserver.stop();
@@ -992,15 +1011,17 @@ class TargetObserver {
         this.disconnectTarget(element, name);
     }
     connectTarget(element, name) {
+        var _a;
         if (!this.targetsByName.has(name, element)) {
             this.targetsByName.add(name, element);
-            this.delegate.targetConnected(element, name);
+            (_a = this.tokenListObserver) === null || _a === void 0 ? void 0 : _a.pause(() => this.delegate.targetConnected(element, name));
         }
     }
     disconnectTarget(element, name) {
+        var _a;
         if (this.targetsByName.has(name, element)) {
             this.targetsByName.delete(name, element);
-            this.delegate.targetDisconnected(element, name);
+            (_a = this.tokenListObserver) === null || _a === void 0 ? void 0 : _a.pause(() => this.delegate.targetDisconnected(element, name));
         }
     }
     disconnectAllTargets() {
