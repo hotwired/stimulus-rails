@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 
-// Connects to data-controller="<%= @attribute.tr('_', '-') %>"
+// Connects to data-controller="<%= @attribute.tr("_", "-") %>"
 export default class extends Controller {
   connect() {
   }
