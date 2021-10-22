@@ -2,7 +2,7 @@ module Stimulus::Manifest
   extend self
 
   def generate_from(controllers_path)
-    extract_controllers_from(controllers_path).collect do |controller_path|
+    extract_controllers_from(controllers_path).delete_if{|e| e.to_s =~ /sw[op]$/}.collect do |controller_path|
       import_and_register_controller(controllers_path, controller_path)
     end
   end
