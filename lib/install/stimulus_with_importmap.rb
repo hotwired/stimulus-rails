@@ -12,8 +12,8 @@ append_to_file "app/javascript/application.js", %(import "controllers"\n)
 
 say "Pin Stimulus"
 append_to_file "config/importmap.rb" do <<-RUBY
-pin "@hotwired/stimulus", to: "stimulus.js"
-pin "@hotwired/stimulus-loading", to: "stimulus-loading.js"
+pin "@hotwired/stimulus", to: "stimulus.js", preload: true
+pin "@hotwired/stimulus-loading", to: "stimulus-loading.js", preload: true
 pin_all_from "app/javascript/controllers", under: "controllers"
 RUBY
 end
