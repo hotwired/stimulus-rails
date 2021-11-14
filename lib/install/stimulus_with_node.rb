@@ -11,7 +11,7 @@ if (Rails.root.join("app/javascript/application.js")).exist?
   say "Import Stimulus controllers"
   append_to_file "app/javascript/application.js", %(import "./controllers"\n)
 else
-  say %(You must import "./controllers" in your JavaScript entrypoint), :red
+  say %(For Rails 6, you need to add "import '../controllers'" to "app/javascript/packs/application.js" by hand".), :red
 end
 
 say "Install Stimulus"
