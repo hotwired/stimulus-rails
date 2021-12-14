@@ -7,6 +7,8 @@ Stimulus for Rails makes it easy to use this modest framework with both import-m
 
 ## Installation
 
+This gem is automatically configured for applications made with Rails 7+ (unless `--skip-hotwire` is passed to the generator). But if you're on Rails 6, you can install it manually with:
+
 1. Add the `stimulus-rails` gem to your Gemfile: `gem 'stimulus-rails'`
 2. Run `./bin/bundle install`.
 3. Run `./bin/rails stimulus:install`
