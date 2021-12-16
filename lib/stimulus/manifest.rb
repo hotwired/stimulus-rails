@@ -15,7 +15,7 @@ module Stimulus::Manifest
 
     <<-JS
 
-import #{controller_class_name} from "./#{controller_path}"
+import #{controller_class_name} from "controllers/#{File.basename(controller_path, '.*')}"
 application.register("#{tag_name}", #{controller_class_name})
     JS
   end

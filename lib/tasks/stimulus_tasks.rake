@@ -40,7 +40,7 @@ namespace :stimulus do
         index.puts "// Run that command whenever you add a new controller or create them with"
         index.puts "// ./bin/rails generate stimulus controllerName"
         index.puts
-        index.puts %(import { application } from "./application")
+        index.puts %(import { application } from "controllers/application")
         index.puts manifest
       end
     end
