@@ -23,7 +23,7 @@ function registerControllerFromPath(path, under, application) {
 
   import(path)
     .then(module => registerController(name, module, application))
-    .catch(error => console.debug(`Failed to register controller: ${name} (${path})`, error))
+    .catch(error => console.error(`Failed to register controller: ${name} (${path})`, error))
 }
 
 
@@ -66,7 +66,7 @@ function extractControllerNamesFrom(element) {
 function loadController(name, under, application) {
   import(controllerFilename(name, under))
     .then(module => registerController(name, module, application))
-    .catch(error => console.debug(`Failed to autoload controller: ${name}`, error))
+    .catch(error => console.error(`Failed to autoload controller: ${name}`, error))
 }
 
 function controllerFilename(name, under) {
