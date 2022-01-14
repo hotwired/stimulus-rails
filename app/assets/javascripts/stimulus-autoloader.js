@@ -19,7 +19,7 @@ function extractControllerNamesFrom(element) {
 function loadController(name) {
   import(controllerFilename(name))
     .then(module => registerController(name, module))
-    .catch(error => console.log(`Failed to autoload controller: ${name}`, error))
+    .catch(error => console.error(`Failed to autoload controller: ${name}`, error))
 }
 
 function controllerFilename(name) {
