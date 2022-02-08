@@ -11,9 +11,12 @@ say "Import Stimulus controllers"
 append_to_file "app/javascript/application.js", %(import "controllers"\n)
 
 say "Pin Stimulus"
-append_to_file "config/importmap.rb" do <<-RUBY
-pin "@hotwired/stimulus", to: "stimulus.min.js", preload: true
-pin "@hotwired/stimulus-loading", to: "stimulus-loading.js", preload: true
-pin_all_from "app/javascript/controllers", under: "controllers"
-RUBY
-end
+say %(Appending: pin "@hotwired/stimulus", to: "stimulus.min.js", preload: true")
+append_to_file "config/importmap.rb", %(pin "@hotwired/stimulus", to: "stimulus.min.js", preload: true\n)
+
+say %(Appending: pin "@hotwired/stimulus-loading", to: "stimulus-loading.js", preload: true)
+append_to_file "config/importmap.rb", %(pin "@hotwired/stimulus-loading", to: "stimulus-loading.js", preload: true\n)
+
+say "Pin all controllers"
+say %(Appending: pin_all_from "app/javascript/controllers", under: "controllers")
+append_to_file "config/importmap.rb", %(pin_all_from "app/javascript/controllers", under: "controllers"\n)
