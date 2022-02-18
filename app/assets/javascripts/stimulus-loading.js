@@ -21,7 +21,7 @@ function registerControllerFromPath(path, under, application) {
     .replace(/\//g, "--")
     .replace(/_/g, "-")
 
-  if !(name in registeredControllers) {
+  if (!(name in registeredControllers)) {
     import(path)
       .then(module => registerController(name, module, application))
       .catch(error => console.error(`Failed to register controller: ${name} (${path})`, error))
@@ -66,7 +66,7 @@ function extractControllerNamesFrom(element) {
 }
 
 function loadController(name, under, application) {
-  if !(name in registeredControllers) {
+  if (!(name in registeredControllers)) {
     import(controllerFilename(name, under))
       .then(module => registerController(name, module, application))
       .catch(error => console.error(`Failed to autoload controller: ${name}`, error))
