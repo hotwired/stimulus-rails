@@ -78,6 +78,8 @@ function controllerFilename(name, under) {
 }
 
 function registerController(name, module, application) {
-  application.register(name, module.default)
-  registeredControllers[name] = true
+  if (!(name in registeredControllers)) {
+    application.register(name, module.default)
+    registeredControllers[name] = true
+  }
 }
