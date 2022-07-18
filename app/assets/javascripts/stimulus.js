@@ -3,8 +3,8 @@
 //= link ./stimulus-loading.js
 
 /*
-Stimulus 3.0.1
-Copyright © 2021 Basecamp, LLC
+Stimulus 3.1.0
+Copyright © 2022 Basecamp, LLC
  */
 class EventListener {
     constructor(eventTarget, eventName, eventOptions) {
@@ -191,24 +191,15 @@ class Action {
         return `${this.eventName}${eventNameSuffix}->${this.identifier}#${this.methodName}`;
     }
     get params() {
-        if (this.eventTarget instanceof Element) {
-            return this.getParamsFromEventTargetAttributes(this.eventTarget);
-        }
-        else {
-            return {};
-        }
-    }
-    getParamsFromEventTargetAttributes(eventTarget) {
         const params = {};
         const pattern = new RegExp(`^data-${this.identifier}-(.+)-param$`);
-        const attributes = Array.from(eventTarget.attributes);
-        attributes.forEach(({ name, value }) => {
+        for (const { name, value } of Array.from(this.element.attributes)) {
             const match = name.match(pattern);
             const key = match && match[1];
             if (key) {
-                Object.assign(params, { [camelize(key)]: typecast(value) });
+                params[camelize(key)] = typecast(value);
             }
-        });
+        }
         return params;
     }
     get eventTargetName() {
@@ -260,7 +251,9 @@ class Binding {
         return this.context.identifier;
     }
     handleEvent(event) {
-        if (this.willBeInvokedByEvent(event)) {
+        if (this.willBeInvokedByEvent(event) && this.shouldBeInvokedPerSelf(event)) {
+            this.processStopPropagation(event);
+            this.processPreventDefault(event);
             this.invokeWithEvent(event);
         }
     }
@@ -274,6 +267,16 @@ class Binding {
         }
         throw new Error(`Action "${this.action}" references undefined method "${this.methodName}"`);
     }
+    processStopPropagation(event) {
+        if (this.eventOptions.stop) {
+            event.stopPropagation();
+        }
+    }
+    processPreventDefault(event) {
+        if (this.eventOptions.prevent) {
+            event.preventDefault();
+        }
+    }
     invokeWithEvent(event) {
         const { target, currentTarget } = event;
         try {
@@ -286,6 +289,14 @@ class Binding {
             const { identifier, controller, element, index } = this;
             const detail = { identifier, controller, element, index, event };
             this.context.handleError(error, `invoking action "${this.action}"`, detail);
+        }
+    }
+    shouldBeInvokedPerSelf(event) {
+        if (this.action.eventOptions.self === true) {
+            return this.action.element === event.target;
+        }
+        else {
+            return true;
         }
     }
     willBeInvokedByEvent(event) {
@@ -902,10 +913,10 @@ class ValueObserver {
         this.receiver = receiver;
         this.stringMapObserver = new StringMapObserver(this.element, this);
         this.valueDescriptorMap = this.controller.valueDescriptorMap;
-        this.invokeChangedCallbacksForDefaultValues();
     }
     start() {
         this.stringMapObserver.start();
+        this.invokeChangedCallbacksForDefaultValues();
     }
     stop() {
         this.stringMapObserver.stop();
@@ -957,12 +968,19 @@ class ValueObserver {
         const changedMethod = this.receiver[changedMethodName];
         if (typeof changedMethod == "function") {
             const descriptor = this.valueDescriptorNameMap[name];
-            const value = descriptor.reader(rawValue);
-            let oldValue = rawOldValue;
-            if (rawOldValue) {
-                oldValue = descriptor.reader(rawOldValue);
+            try {
+                const value = descriptor.reader(rawValue);
+                let oldValue = rawOldValue;
+                if (rawOldValue) {
+                    oldValue = descriptor.reader(rawOldValue);
+                }
+                changedMethod.call(this.receiver, value, oldValue);
             }
-            changedMethod.call(this.receiver, value, oldValue);
+            catch (error) {
+                if (!(error instanceof TypeError))
+                    throw error;
+                throw new TypeError(`Stimulus Value "${this.context.identifier}.${descriptor.name}" - ${error.message}`);
+            }
         }
     }
     get valueDescriptors() {
@@ -1638,13 +1656,15 @@ class Application {
         this.logDebugActivity("application", "stop");
     }
     register(identifier, controllerConstructor) {
-        if (controllerConstructor.shouldLoad) {
-            this.load({ identifier, controllerConstructor });
-        }
+        this.load({ identifier, controllerConstructor });
     }
     load(head, ...rest) {
         const definitions = Array.isArray(head) ? head : [head, ...rest];
-        definitions.forEach(definition => this.router.loadDefinition(definition));
+        definitions.forEach(definition => {
+            if (definition.controllerConstructor.shouldLoad) {
+                this.router.loadDefinition(definition);
+            }
+        });
     }
     unload(head, ...rest) {
         const identifiers = Array.isArray(head) ? head : [head, ...rest];
@@ -1751,7 +1771,7 @@ function ValuePropertiesBlessing(constructor) {
         valueDescriptorMap: {
             get() {
                 return valueDefinitionPairs.reduce((result, valueDefinitionPair) => {
-                    const valueDescriptor = parseValueDefinitionPair(valueDefinitionPair);
+                    const valueDescriptor = parseValueDefinitionPair(valueDefinitionPair, this.identifier);
                     const attributeName = this.data.getAttributeNameForKey(valueDescriptor.key);
                     return Object.assign(result, { [attributeName]: valueDescriptor });
                 }, {});
@@ -1762,8 +1782,8 @@ function ValuePropertiesBlessing(constructor) {
         return Object.assign(properties, propertiesForValueDefinitionPair(valueDefinitionPair));
     }, propertyDescriptorMap);
 }
-function propertiesForValueDefinitionPair(valueDefinitionPair) {
-    const definition = parseValueDefinitionPair(valueDefinitionPair);
+function propertiesForValueDefinitionPair(valueDefinitionPair, controller) {
+    const definition = parseValueDefinitionPair(valueDefinitionPair, controller);
     const { key, name, reader: read, writer: write } = definition;
     return {
         [name]: {
@@ -1792,8 +1812,12 @@ function propertiesForValueDefinitionPair(valueDefinitionPair) {
         }
     };
 }
-function parseValueDefinitionPair([token, typeDefinition]) {
-    return valueDescriptorForTokenAndTypeDefinition(token, typeDefinition);
+function parseValueDefinitionPair([token, typeDefinition], controller) {
+    return valueDescriptorForTokenAndTypeDefinition({
+        controller,
+        token,
+        typeDefinition,
+    });
 }
 function parseValueTypeConstant(constant) {
     switch (constant) {
@@ -1815,24 +1839,30 @@ function parseValueTypeDefault(defaultValue) {
     if (Object.prototype.toString.call(defaultValue) === "[object Object]")
         return "object";
 }
-function parseValueTypeObject(typeObject) {
-    const typeFromObject = parseValueTypeConstant(typeObject.type);
-    if (typeFromObject) {
-        const defaultValueType = parseValueTypeDefault(typeObject.default);
-        if (typeFromObject !== defaultValueType) {
-            throw new Error(`Type "${typeFromObject}" must match the type of the default value. Given default value: "${typeObject.default}" as "${defaultValueType}"`);
-        }
-        return typeFromObject;
+function parseValueTypeObject(payload) {
+    const typeFromObject = parseValueTypeConstant(payload.typeObject.type);
+    if (!typeFromObject)
+        return;
+    const defaultValueType = parseValueTypeDefault(payload.typeObject.default);
+    if (typeFromObject !== defaultValueType) {
+        const propertyPath = payload.controller ? `${payload.controller}.${payload.token}` : payload.token;
+        throw new Error(`The specified default value for the Stimulus Value "${propertyPath}" must match the defined type "${typeFromObject}". The provided default value of "${payload.typeObject.default}" is of type "${defaultValueType}".`);
     }
+    return typeFromObject;
 }
-function parseValueTypeDefinition(typeDefinition) {
-    const typeFromObject = parseValueTypeObject(typeDefinition);
-    const typeFromDefaultValue = parseValueTypeDefault(typeDefinition);
-    const typeFromConstant = parseValueTypeConstant(typeDefinition);
+function parseValueTypeDefinition(payload) {
+    const typeFromObject = parseValueTypeObject({
+        controller: payload.controller,
+        token: payload.token,
+        typeObject: payload.typeDefinition
+    });
+    const typeFromDefaultValue = parseValueTypeDefault(payload.typeDefinition);
+    const typeFromConstant = parseValueTypeConstant(payload.typeDefinition);
     const type = typeFromObject || typeFromDefaultValue || typeFromConstant;
     if (type)
         return type;
-    throw new Error(`Unknown value type "${typeDefinition}"`);
+    const propertyPath = payload.controller ? `${payload.controller}.${payload.typeDefinition}` : payload.token;
+    throw new Error(`Unknown value type "${propertyPath}" for "${payload.token}" value`);
 }
 function defaultValueForDefinition(typeDefinition) {
     const constant = parseValueTypeConstant(typeDefinition);
@@ -1843,15 +1873,15 @@ function defaultValueForDefinition(typeDefinition) {
         return defaultValue;
     return typeDefinition;
 }
-function valueDescriptorForTokenAndTypeDefinition(token, typeDefinition) {
-    const key = `${dasherize(token)}-value`;
-    const type = parseValueTypeDefinition(typeDefinition);
+function valueDescriptorForTokenAndTypeDefinition(payload) {
+    const key = `${dasherize(payload.token)}-value`;
+    const type = parseValueTypeDefinition(payload);
     return {
         type,
         key,
         name: camelize(key),
-        get defaultValue() { return defaultValueForDefinition(typeDefinition); },
-        get hasCustomDefaultValue() { return parseValueTypeDefault(typeDefinition) !== undefined; },
+        get defaultValue() { return defaultValueForDefinition(payload.typeDefinition); },
+        get hasCustomDefaultValue() { return parseValueTypeDefault(payload.typeDefinition) !== undefined; },
         reader: readers[type],
         writer: writers[type] || writers.default
     };
@@ -1867,12 +1897,12 @@ const readers = {
     array(value) {
         const array = JSON.parse(value);
         if (!Array.isArray(array)) {
-            throw new TypeError("Expected array");
+            throw new TypeError(`expected value of type "array" but instead got value "${value}" of type "${parseValueTypeDefault(array)}"`);
         }
         return array;
     },
     boolean(value) {
-        return !(value == "0" || value == "false");
+        return !(value == "0" || String(value).toLowerCase() == "false");
     },
     number(value) {
         return Number(value);
@@ -1880,7 +1910,7 @@ const readers = {
     object(value) {
         const object = JSON.parse(value);
         if (object === null || typeof object != "object" || Array.isArray(object)) {
-            throw new TypeError("Expected object");
+            throw new TypeError(`expected value of type "object" but instead got value "${value}" of type "${parseValueTypeDefault(object)}"`);
         }
         return object;
     },
