@@ -3,7 +3,7 @@
 //= link ./stimulus-loading.js
 
 /*
-Stimulus 3.2.0
+Stimulus 3.2.1
 Copyright © 2022 Basecamp, LLC
  */
 class EventListener {
@@ -173,13 +173,19 @@ const descriptorPattern = /^(?:(.+?)(?:\.(.+?))?(?:@(window|document))?->)?(.+?)
 function parseActionDescriptorString(descriptorString) {
     const source = descriptorString.trim();
     const matches = source.match(descriptorPattern) || [];
+    let eventName = matches[1];
+    let keyFilter = matches[2];
+    if (keyFilter && !["keydown", "keyup", "keypress"].includes(eventName)) {
+        eventName += `.${keyFilter}`;
+        keyFilter = "";
+    }
     return {
         eventTarget: parseEventTarget(matches[3]),
-        eventName: matches[1],
+        eventName,
         eventOptions: matches[6] ? parseEventOptions(matches[6]) : {},
         identifier: matches[4],
         methodName: matches[5],
-        keyFilter: matches[2],
+        keyFilter,
     };
 }
 function parseEventTarget(eventTargetName) {
@@ -255,7 +261,7 @@ class Action {
             return false;
         }
         if (!Object.prototype.hasOwnProperty.call(this.keyMappings, standardFilter)) {
-            error(`contains unkown key filter: ${this.keyFilter}`);
+            error(`contains unknown key filter: ${this.keyFilter}`);
         }
         return this.keyMappings[standardFilter].toLowerCase() !== event.key.toLowerCase();
     }
