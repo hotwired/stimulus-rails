@@ -44,5 +44,16 @@ namespace :stimulus do
         index.puts manifest
       end
     end
+
+    task :append, [:controller_name] do |task, args|
+      manifest =
+        Stimulus::Manifest.generate_from(Rails.root.join("app/javascript/controllers"))
+      controller_class = "#{args[:controller_name]}_controller".camelize
+      controller_lines = manifest.split("\n").flatten.select {|line| line.match?(controller_class)}.join("\n")
+
+      File.open(Rails.root.join("app/javascript/controllers/index.js"), "a") do |index|
+        index.puts controller_lines
+      end
+    end
   end
 end
