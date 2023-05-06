@@ -5,7 +5,7 @@ class StimulusGenerator < Rails::Generators::NamedBase # :nodoc:
 
   def copy_view_files
     @attribute = stimulus_attribute_value(controller_name)
-    template "controller.js", "app/javascript/controllers/#{controller_name}_controller.js"
+    template "controller.js", "#{Dir.glob("**/javascript/controllers/").first}#{controller_name}_controller.js"
     rails_command "stimulus:manifest:update" unless Rails.root.join("config/importmap.rb").exist?
   end
 
