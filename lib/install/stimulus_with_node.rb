@@ -1,3 +1,7 @@
+say "Create Stimulus initializer"
+copy_file "#{__dir__}/config/initializers/stimulus.rb",
+  "config/initializers/stimulus.rb"
+
 say "Create controllers directory"
 empty_directory "app/javascript/controllers"
 copy_file "#{__dir__}/app/javascript/controllers/index_for_node.js",
