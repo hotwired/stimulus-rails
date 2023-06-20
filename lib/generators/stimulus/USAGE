@@ -13,3 +13,10 @@ Examples:
     bin/rails generate stimulus nested/chat
 
     creates: app/javascript/controllers/nested/chat_controller.js
+
+
+    bin/rails generate stimulus chat --append
+
+    creates: app/javascript/controllers/chat_controller.js
+    appends: The controller name to controllers/index.js while
+             maintaining the controller index's original state.
