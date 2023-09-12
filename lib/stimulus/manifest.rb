@@ -10,7 +10,7 @@ module Stimulus::Manifest
   def import_and_register_controller(controllers_path, controller_path)
     controller_path = controller_path.relative_path_from(controllers_path).to_s
     module_path = controller_path.split('.').first
-    controller_class_name = module_path.camelize.gsub(/::/, "__")
+    controller_class_name = module_path.underscore.camelize.gsub(/::/, "__")
     tag_name = module_path.remove(/_controller/).gsub(/_/, "-").gsub(/\//, "--")
 
     <<-JS
