@@ -1,12 +1,24 @@
 require "stimulus/manifest"
 
-def run_stimulus_install_template(path) system "#{RbConfig.ruby} ./bin/rails app:template LOCATION=#{File.expand_path("../install/#{path}.rb",  __dir__)}" end
+def run_stimulus_install_template(path)
+  system "#{RbConfig.ruby} ./bin/rails app:template LOCATION=#{File.expand_path("../install/#{path}.rb",  __dir__)}"
+end
+
+def using_bun?
+  Rails.root.join("bun.lockb").exist? || (tool_exists?('bun') && !Rails.root.join("yarn.lock").exist?)
+end
+
+def tool_exists?(tool)
+  system "command -v #{tool} > /dev/null"
+end
 
 namespace :stimulus do
   desc "Install Stimulus into the app"
   task :install do
     if Rails.root.join("config/importmap.rb").exist?
       Rake::Task["stimulus:install:importmap"].invoke
+    elsif Rails.root.join("package.json").exist? && using_bun?
+      Rake::Task["stimulus:install:bun"].invoke
     elsif Rails.root.join("package.json").exist?
       Rake::Task["stimulus:install:node"].invoke
     else
@@ -23,6 +35,11 @@ namespace :stimulus do
     desc "Install Stimulus on an app running node"
     task :node do
       run_stimulus_install_template "stimulus_with_node"
+    end
+
+    desc "Install Stimulus on an app running bun"
+    task :bun do
+      run_stimulus_install_template "stimulus_with_bun"
     end
   end
 
