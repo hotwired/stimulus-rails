@@ -1,15 +1,20 @@
 require "stimulus/manifest"
 
-def run_stimulus_install_template(path)
-  system "#{RbConfig.ruby} ./bin/rails app:template LOCATION=#{File.expand_path("../install/#{path}.rb",  __dir__)}"
-end
+module Stimulus
+  module Tasks
+    extend self
+    def run_stimulus_install_template(path)
+      system "#{RbConfig.ruby} ./bin/rails app:template LOCATION=#{File.expand_path("../install/#{path}.rb",  __dir__)}"
+    end
 
-def using_bun?
-  Rails.root.join("bun.lockb").exist? || (tool_exists?('bun') && !Rails.root.join("yarn.lock").exist?)
-end
+    def using_bun?
+      Rails.root.join("bun.lockb").exist? || (tool_exists?('bun') && !Rails.root.join("yarn.lock").exist?)
+    end
 
-def tool_exists?(tool)
-  system "command -v #{tool} > /dev/null"
+    def tool_exists?(tool)
+      system "command -v #{tool} > /dev/null"
+    end
+  end
 end
 
 namespace :stimulus do
@@ -17,7 +22,7 @@ namespace :stimulus do
   task :install do
     if Rails.root.join("config/importmap.rb").exist?
       Rake::Task["stimulus:install:importmap"].invoke
-    elsif Rails.root.join("package.json").exist? && using_bun?
+    elsif Rails.root.join("package.json").exist? && Stimulus::Tasks.using_bun?
       Rake::Task["stimulus:install:bun"].invoke
     elsif Rails.root.join("package.json").exist?
       Rake::Task["stimulus:install:node"].invoke
@@ -29,17 +34,17 @@ namespace :stimulus do
   namespace :install do
     desc "Install Stimulus on an app running importmap-rails"
     task :importmap do
-      run_stimulus_install_template "stimulus_with_importmap"
+      Stimulus::Tasks.run_stimulus_install_template "stimulus_with_importmap"
     end
 
     desc "Install Stimulus on an app running node"
     task :node do
-      run_stimulus_install_template "stimulus_with_node"
+      Stimulus::Tasks.run_stimulus_install_template "stimulus_with_node"
     end
 
     desc "Install Stimulus on an app running bun"
     task :bun do
-      run_stimulus_install_template "stimulus_with_bun"
+      Stimulus::Tasks.run_stimulus_install_template "stimulus_with_bun"
     end
   end
 
