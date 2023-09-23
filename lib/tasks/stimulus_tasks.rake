@@ -8,11 +8,7 @@ module Stimulus
     end
 
     def using_bun?
-      Rails.root.join("bun.lockb").exist? || (tool_exists?('bun') && !Rails.root.join("yarn.lock").exist?)
-    end
-
-    def tool_exists?(tool)
-      system "command -v #{tool} > /dev/null"
+      Rails.root.join("bun.config.js").exist?
     end
   end
 end
