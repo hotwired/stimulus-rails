@@ -1,5 +1,6 @@
 require 'rails'
 require "rails/test_help"
+require 'stimulus-rails'
 
 # Configure Rails Environment
 ENV["RAILS_ENV"] = "test"
