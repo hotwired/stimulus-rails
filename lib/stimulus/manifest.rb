@@ -2,9 +2,11 @@ module Stimulus::Manifest
   extend self
 
   def generate_from(controllers_path)
-    extract_controllers_from(controllers_path).collect do |controller_path|
+    manifest = extract_controllers_from(controllers_path).collect do |controller_path|
       import_and_register_controller(controllers_path, controller_path)
     end
+
+    manifest.uniq
   end
 
   def import_and_register_controller(controllers_path, controller_path)
