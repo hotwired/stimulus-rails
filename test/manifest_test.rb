@@ -9,6 +9,9 @@ class Stimulus::Manifest::Test < ActiveSupport::TestCase
     assert_includes manifest, 'import HelloController from "./hello_controller"'
     assert_includes manifest, 'application.register("hello", HelloController)'
 
+    assert_equal 1, manifest.scan('import HelloController from "./hello_controller"').length
+    assert_equal 1, manifest.scan('application.register("hello", HelloController').length
+
     # CoffeeScript controller
     assert_includes manifest, 'import CoffeeController from "./coffee_controller"'
     assert_includes manifest, 'application.register("coffee", CoffeeController)'
