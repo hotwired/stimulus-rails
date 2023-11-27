@@ -11,7 +11,7 @@ say "Import Stimulus controllers"
 append_to_file "app/javascript/application.js", %(import "controllers"\n)
 
 say "Pin Stimulus"
-say %(Appending: pin "@hotwired/stimulus", to: "stimulus.min.js", preload: true")
+say %(Appending: pin "@hotwired/stimulus", to: "stimulus.min.js", preload: true)
 append_to_file "config/importmap.rb", %(pin "@hotwired/stimulus", to: "stimulus.min.js", preload: true\n)
 
 say %(Appending: pin "@hotwired/stimulus-loading", to: "stimulus-loading.js", preload: true)
