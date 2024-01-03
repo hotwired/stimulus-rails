@@ -57,8 +57,8 @@ import "controllers"
 
 6. Finally, Pin Stimulus and controllers in `config/importmap.rb` by adding:
 ```ruby
-pin "@hotwired/stimulus", to: "stimulus.min.js", preload: true
-pin "@hotwired/stimulus-loading", to: "stimulus-loading.js", preload: true
+pin "@hotwired/stimulus", to: "stimulus.min.js"
+pin "@hotwired/stimulus-loading", to: "stimulus-loading.js"
 pin_all_from "app/javascript/controllers", under: "controllers"
 
 ```
