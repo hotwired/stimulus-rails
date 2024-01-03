@@ -15,7 +15,7 @@ else
 end
 
 say "Install Stimulus"
-if Rails.root.join("bun.config.js")).exist?
+if (Rails.root.join("bun.config.js")).exist?
   run "bun add @hotwired/stimulus"
 else
   run "yarn add @hotwired/stimulus"
