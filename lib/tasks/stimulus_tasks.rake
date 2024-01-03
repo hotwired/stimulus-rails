@@ -45,10 +45,12 @@ namespace :stimulus do
   end
 
   namespace :manifest do
+    desc "Show the current Stimulus manifest (all installed controllers)"
     task :display do
       puts Stimulus::Manifest.generate_from(Rails.root.join("app/javascript/controllers"))
     end
 
+    desc "Update the Stimulus manifest (will overwrite controllers/index.js)"
     task :update do
       manifest =
         Stimulus::Manifest.generate_from(Rails.root.join("app/javascript/controllers"))
