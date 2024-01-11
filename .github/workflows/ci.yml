@@ -12,6 +12,7 @@ jobs:
           '6.0.0',
           '6.1.0',
           '7.0.1',
+          '7.1.2'
         ]
         ruby: [
           '2.7',
@@ -36,6 +37,7 @@ jobs:
         ruby-version: ${{ matrix.ruby }}
         bundler-cache: false
 
+    - uses: oven-sh/setup-bun@v1
     - name: Install Dependencies
       env:
         RAILS_VERSION: ${{ matrix.rails }}
