@@ -4,7 +4,7 @@ module Stimulus
   module Tasks
     extend self
     def run_stimulus_install_template(path)
-      system "#{RbConfig.ruby} ./bin/rails app:template LOCATION=#{File.expand_path("../install/#{path}.rb",  __dir__)}"
+      system RbConfig.ruby, "./bin/rails", "app:template", "LOCATION=#{File.expand_path("../install/#{path}.rb",  __dir__)}"
     end
 
     def using_bun?
