@@ -94,10 +94,7 @@ export { application }
 
 5. Add the following line to `app/javascript/application.js` to import all your controllers:
 ```javascript
-import "controllers"
-
-// esbuild uses another syntax
-// import "./controllers"
+import "./controllers"
 ```
 
 6. Finally, add the Stimulus package to yarn:
