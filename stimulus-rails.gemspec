@@ -9,6 +9,7 @@ Gem::Specification.new do |spec|
   spec.summary     = "A modest JavaScript framework for the HTML you already have."
   spec.license     = "MIT"
 
+  spec.metadata["changelog_uri"] = "https://github.com/hotwired/stimulus-rails/releases"
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/hotwired/stimulus-rails"
 
