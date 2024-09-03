@@ -26,7 +26,6 @@ class StimulusGeneratorTest < Rails::Generators::TestCase
     assert_file "app/javascript/controllers/hello_world_controller.js", /data-controller="hello-world"/
   end
 
-
   test "generating with camelized name and lower case first letter" do
     run_generator ["helloWorld"]
 
@@ -46,9 +45,9 @@ class StimulusGeneratorTest < Rails::Generators::TestCase
   end
 
   test "generating with namespaced name" do
-    run_generator ["hello/world"]
+    run_generator ["hello/happy/world"]
 
-    assert_file "app/javascript/controllers/hello/world_controller.js", /data-controller="hello--world"/
+    assert_file "app/javascript/controllers/hello/happy/world_controller.js", /data-controller="hello--happy--world"/
   end
 
   test "generating with namespaced and camelized name" do
