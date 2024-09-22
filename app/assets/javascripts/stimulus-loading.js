@@ -25,10 +25,11 @@ function registerControllerFromPath(path, under, application) {
       .then((module) => registerController(name, module, application))
       .catch((error) => {
         if (error instanceof TypeError) {
-          error.message = `Failed to register controller: ${name} (${path})`;
+          error.message = `Failed to register controller: ${name} (${path})`
         }
-        throw error;
-      });
+
+        throw error
+      })
   }
 }
 
