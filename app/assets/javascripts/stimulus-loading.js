@@ -23,7 +23,13 @@ function registerControllerFromPath(path, under, application) {
   if (canRegisterController(name, application)) {
     import(path)
       .then(module => registerController(name, module, application))
-      .catch(error => console.error(`Failed to register controller: ${name} (${path})`, error))
+      .catch(error => {
+        if (error instanceof TypeError) {
+          error.message = `Failed to register controller: ${name} (${path})`
+        }
+
+        throw error
+      })
   }
 }
 
