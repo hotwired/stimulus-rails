@@ -4,8 +4,6 @@ copy_file "#{__dir__}/app/javascript/controllers/index_for_node.js",
   "app/javascript/controllers/index.js"
 copy_file "#{__dir__}/app/javascript/controllers/application.js",
   "app/javascript/controllers/application.js"
-copy_file "#{__dir__}/app/javascript/controllers/hello_controller.js",
-  "app/javascript/controllers/hello_controller.js"
 
 if (Rails.root.join("app/javascript/application.js")).exist?
   say "Import Stimulus controllers"
