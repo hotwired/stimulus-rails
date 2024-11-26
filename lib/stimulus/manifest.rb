@@ -13,7 +13,7 @@ module Stimulus::Manifest
     controller_path = controller_path.relative_path_from(controllers_path).to_s
     module_path = controller_path.split('.').first
     controller_class_name = module_path.underscore.camelize.gsub(/::/, "__")
-    tag_name = module_path.remove(/_controller/).gsub(/_/, "-").gsub(/\//, "--")
+    tag_name = module_path.remove(/_controller/).tr("_", "-").gsub(/\//, "--")
 
     <<-JS
 

@@ -17,6 +17,6 @@ class StimulusGenerator < Rails::Generators::NamedBase # :nodoc:
     end
 
     def stimulus_attribute_value(controller_name)
-      controller_name.gsub(/\//, "--").gsub("_", "-")
+      controller_name.gsub(/\//, "--").tr("_", "-")
     end
 end
