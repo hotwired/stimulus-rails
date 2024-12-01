@@ -19,4 +19,20 @@ class StimulusGenerator < Rails::Generators::NamedBase # :nodoc:
     def stimulus_attribute_value(controller_name)
       controller_name.gsub(/\//, "--").gsub("_", "-")
     end
+
+    def controller_import
+      if application_controller_exists?
+        'import ApplicationController from "./application_controller"'
+      else
+        'import { Controller } from "@hotwired/stimulus"'
+      end
+    end
+
+    def parent_controller
+      application_controller_exists? ? "ApplicationController" : "Controller"
+    end
+
+    def application_controller_exists?
+      File.exist?(Rails.root.join("app/javascript/controllers/application_controller.js"))
+    end
 end

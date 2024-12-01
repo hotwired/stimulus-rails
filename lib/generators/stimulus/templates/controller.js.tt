@@ -1,7 +1,7 @@
-import { Controller } from "@hotwired/stimulus"
+<%= controller_import %>
 
-// Connects to data-controller="<%= @attribute %>"
-export default class extends Controller {
+// Connects to data-controller="<%= attribute %>"
+export default class extends <%= parent_controller %> {
   connect() {
   }
 }
