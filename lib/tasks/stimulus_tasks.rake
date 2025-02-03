@@ -7,6 +7,11 @@ module Stimulus
       system RbConfig.ruby, "./bin/rails", "app:template", "LOCATION=#{File.expand_path("../install/#{path}.rb",  __dir__)}"
     end
 
+    def controllers_path
+      js_root = Rails.application.config.generators.options.dig(:stimulus, :js_root) || "app/javascript"
+      Rails.root.join(js_root, "/controllers")
+    end
+
     def using_bun?
       Rails.root.join("bun.config.js").exist?
     end
@@ -46,13 +51,14 @@ namespace :stimulus do
 
   namespace :manifest do
     desc "Show the current Stimulus manifest (all installed controllers)"
-    task :display do
-      puts Stimulus::Manifest.generate_from(Rails.root.join("app/javascript/controllers"))
+
+    task display: :environment do
+      Stimulus::Manifest.generate_from(Stimulus::Tasks.controllers_path)
     end
 
     desc "Update the Stimulus manifest (will overwrite controllers/index.js)"
-    task :update do
-      Stimulus::Manifest.write_index_from(Rails.root.join("app/javascript/controllers"))
+    task update: :environment do
+      Stimulus::Manifest.write_index_from(Stimulus::Tasks.controllers_path)
     end
   end
 end
