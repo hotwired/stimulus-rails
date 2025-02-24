@@ -57,7 +57,7 @@ namespace :stimulus do
     desc "Show the current Stimulus manifest (all installed controllers)"
 
     task :display do
-      Stimulus::Manifest.generate_from(Stimulus::Tasks.controllers_path)
+      puts Stimulus::Manifest.generate_from(Stimulus::Tasks.controllers_path)
     end
 
     desc "Update the Stimulus manifest (will overwrite controllers/index.js)"
