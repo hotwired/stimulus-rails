@@ -9,8 +9,8 @@ module Stimulus
     end
 
     def controllers_root
-      config = Rails.application.config.generators.options.dig(:stimulus)
-      Rails.root.join(StimulusGenerator.new(["stimulus"], config, {}).options.controllers_path)
+      Rails.root.join \
+        StimulusGenerator.new(["stimulus"], Rails.application.config.generators.options.dig(:stimulus), {}).options.controllers_path
     end
 
     def using_bun?
