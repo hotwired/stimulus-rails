@@ -9,11 +9,8 @@ module Stimulus
     end
 
     def controllers_path
-      generator_config = Rails.application.config.generators.options.dig(:stimulus)
-      Rails.root.join(
-        StimulusGenerator.new(["stimulus"], generator_config, {}).options.js_root,
-        "controllers"
-      )
+      config = Rails.application.config.generators.options.dig(:stimulus)
+      Rails.root.join(StimulusGenerator.new(["stimulus"], config, {}).options.js_root, "controllers")
     end
 
     def using_bun?
@@ -55,7 +52,6 @@ namespace :stimulus do
 
   namespace :manifest do
     desc "Show the current Stimulus manifest (all installed controllers)"
-
     task :display do
       puts Stimulus::Manifest.generate_from(Stimulus::Tasks.controllers_path)
     end
