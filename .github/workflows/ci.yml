@@ -4,8 +4,11 @@ on: [push, pull_request]
 
 jobs:
   test:
+    env:
+      RAILS_VERSION: ${{ matrix.rails }}
+      BUNDLE_PATH: "vendor/bundle-${{ matrix.rails }}"
     runs-on: ubuntu-latest
-    name: Test against Rails ${{ matrix.rails }} with Ruby ${{ matrix.ruby }}
+    name: Test against Rails ${{ matrix.rails }} on Ruby ${{ matrix.ruby }}
     strategy:
       matrix:
         rails: [
@@ -30,26 +33,20 @@ jobs:
             ruby: '3.2'
 
     steps:
-    - uses: actions/checkout@v3
-    - uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: ${{ matrix.ruby }}
-        bundler-cache: false
-
+    - uses: actions/checkout@v4
     - name: Install Dependencies
-      env:
-        RAILS_VERSION: ${{ matrix.rails }}
-        BUNDLE_PATH: "vendor/bundle-${{ matrix.rails }}"
       run: |
         sudo apt-get update
         sudo apt-get -yqq install libsqlite3-dev chromium-browser
-        bundle install --jobs 4 --retry 3
+
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby }}
+        bundler-cache: true
 
     - name: Test
       run: bundle exec rake
       env:
-        RAILS_VERSION: ${{ matrix.rails }}
-        BUNDLE_PATH: "vendor/bundle-${{ matrix.rails }}"
         DEFAULT_TEST_EXCLUDE: ""
         RAILS_ENV: "test"
 
