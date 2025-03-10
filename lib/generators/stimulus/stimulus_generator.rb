@@ -10,12 +10,23 @@ class StimulusGenerator < Rails::Generators::NamedBase # :nodoc:
   class_option :controllers_path, type: :string, default: "app/javascript/controllers", desc: "Root path for controller files"
 
   def copy_view_files
+    validate_controllers_path
+
     @attribute = stimulus_attribute_value(controller_name)
     template "controller.js", "#{options.controllers_path}/#{controller_name}_controller.js"
     rails_command "stimulus:manifest:update" unless update_manifest_index?
   end
 
   private
+
+    def validate_controllers_path
+      if options.controllers_path.blank?
+        raise "controllers-path cannot be empty"
+      elsif options.controllers_path.start_with?("/")
+        raise "controllers-path cannot be an absolute path: #{options.controllers_path}"
+      end
+    end
+
     def controller_name
       name.underscore.gsub(/_controller$/, "")
     end

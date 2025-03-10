@@ -90,7 +90,30 @@ class StimulusGeneratorTest < Rails::Generators::TestCase
   test "removes tailing 'controller' in namespaced string" do
     run_generator ["Hello/WorldController"]
 
+    # Access the generator's class variables
+    # Make assertions against the config
+    # assert_equal expected_value, config[:some_key]
+
     assert_file "app/javascript/controllers/hello/world_controller.js", /data-controller="hello--world"/
   end
 
+  test "writes controller to a custom path if specified" do
+    custom_path = "app/custom/controllers"
+    run_generator ["Hello", "--controllers-path=#{custom_path}"]
+
+    assert_file "#{custom_path}/hello_controller.js", /data-controller="hello/
+  end
+
+  test "fails if controllers path is empty" do
+    assert_raises RuntimeError, "controllers-path cannot be empty" do
+      run_generator ["Hello", "--controllers-path="]
+    end
+  end
+
+  test "fails if controllers path is an absolute path" do
+    absolute_path = "/mypath"
+    assert_raises RuntimeError, "controllers-path cannot be an absolute path: #{absolute_path}" do
+      run_generator ["Hello", "--controllers-path=#{absolute_path}"]
+    end
+  end
 end
