@@ -13,3 +13,8 @@ Examples:
     bin/rails generate stimulus nested/chat
 
     creates: app/javascript/controllers/nested/chat_controller.js
+
+
+    bin/rails generate stimulus chat --controllers-path=app/frontend/controllers
+
+    creates: app/frontend/controllers/chat_controller.js

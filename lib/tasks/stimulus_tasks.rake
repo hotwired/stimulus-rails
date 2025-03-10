@@ -1,10 +1,16 @@
 require "stimulus/manifest"
+require "generators/stimulus/stimulus_generator"
 
 module Stimulus
   module Tasks
     extend self
     def run_stimulus_install_template(path)
       system RbConfig.ruby, "./bin/rails", "app:template", "LOCATION=#{File.expand_path("../install/#{path}.rb",  __dir__)}"
+    end
+
+    def controllers_root
+      Rails.root.join \
+        StimulusGenerator.new(["stimulus"], Rails.application.config.generators.options.dig(:stimulus), {}).options.controllers_path
     end
 
     def using_bun?
@@ -47,12 +53,12 @@ namespace :stimulus do
   namespace :manifest do
     desc "Show the current Stimulus manifest (all installed controllers)"
     task :display do
-      puts Stimulus::Manifest.generate_from(Rails.root.join("app/javascript/controllers"))
+      puts Stimulus::Manifest.generate_from(Stimulus::Tasks.controllers_root)
     end
 
     desc "Update the Stimulus manifest (will overwrite controllers/index.js)"
-    task :update do
-      Stimulus::Manifest.write_index_from(Rails.root.join("app/javascript/controllers"))
+    task update: :environment do
+      Stimulus::Manifest.write_index_from(Stimulus::Tasks.controllers_root)
     end
   end
 end
