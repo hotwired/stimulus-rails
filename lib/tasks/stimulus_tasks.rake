@@ -58,7 +58,7 @@ namespace :stimulus do
 
     desc "Update the Stimulus manifest (will overwrite controllers/index.js)"
     task update: :environment do
-      Stimulus::Manifest.write_index_from(Stimulus::Tasks.controllers_path)
+      Stimulus::Manifest.write_index_from(Stimulus::Tasks.controllers_root)
     end
   end
 end
