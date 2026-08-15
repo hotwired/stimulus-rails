@@ -6,7 +6,7 @@ const controllerAttribute = "data-controller"
 // Eager load all controllers registered beneath the `under` path in the import map to the passed application instance.
 export function eagerLoadControllersFrom(under, application) {
   const paths = Object.keys(parseImportmapJson()).filter(path => path.match(new RegExp(`^${under}/.*_controller$`)))
-  paths.forEach(path => registerControllerFromPath(path, under, application))
+  return Promise.all(paths.map(path => registerControllerFromPath(path, under, application)))
 }
 
 function parseImportmapJson() {
@@ -21,7 +21,7 @@ function registerControllerFromPath(path, under, application) {
     .replace(/_/g, "-")
 
   if (canRegisterController(name, application)) {
-    import(path)
+    return import(path)
       .then(module => registerController(name, module, application))
       .catch(error => {
         if (error instanceof TypeError) {
@@ -31,6 +31,8 @@ function registerControllerFromPath(path, under, application) {
         throw error
       })
   }
+
+  return Promise.resolve()
 }
 
 
