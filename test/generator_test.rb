@@ -93,4 +93,23 @@ class StimulusGeneratorTest < Rails::Generators::TestCase
     assert_file "app/javascript/controllers/hello/world_controller.js", /data-controller="hello--world"/
   end
 
+  test "destroying a controller updates the manifest" do
+    run_generator ["hello"]
+    run_generator ["world"]
+
+    assert_file "app/javascript/controllers/hello_controller.js"
+    assert_file "app/javascript/controllers/world_controller.js"
+    assert_file "app/javascript/controllers/index.js", /import HelloController from "\.\/hello_controller"/
+    assert_file "app/javascript/controllers/index.js", /import WorldController from "\.\/world_controller"/
+
+    run_generator ["hello"], behavior: :revoke
+
+    assert_no_file "app/javascript/controllers/hello_controller.js"
+    assert_file "app/javascript/controllers/world_controller.js"
+    assert_file "app/javascript/controllers/index.js" do |content|
+      assert_no_match(/HelloController/, content)
+      assert_match(/WorldController/, content)
+    end
+  end
+
 end

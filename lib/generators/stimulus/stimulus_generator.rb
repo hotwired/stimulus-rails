@@ -9,7 +9,7 @@ class StimulusGenerator < Rails::Generators::NamedBase # :nodoc:
   def copy_view_files
     @attribute = stimulus_attribute_value(controller_name)
     template "controller.js", "app/javascript/controllers/#{controller_name}_controller.js"
-    Stimulus::Manifest.write_index_from(Rails.root.join("app/javascript/controllers")) unless update_manifest_index?
+    Stimulus::Manifest.write_index_from(Rails.root.join("app/javascript/controllers")) if update_manifest_index?
   end
 
   private
