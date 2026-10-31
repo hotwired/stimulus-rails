@@ -74,7 +74,13 @@ function loadController(name, under, application) {
   if (canRegisterController(name, application)) {
     import(controllerFilename(name, under))
       .then(module => registerController(name, module, application))
-      .catch(error => console.error(`Failed to autoload controller: ${name}`, error))
+      .catch(error => {
+        if (error instanceof TypeError) {
+          error.message = `Failed to autoload controller: ${name} (${controllerFilename(name, under)})`
+        }
+
+        throw error
+      })
   }
 }
 
